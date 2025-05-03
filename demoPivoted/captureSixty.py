@@ -6,7 +6,7 @@ save_dir = r'save my frames'
 if not os.path.exists(save_dir):
     os.makedirs(save_dir)
 
-cam = cv2.VideoCapture('http://100.118.139.202:4747/mjpegfeed')
+cam = cv2.VideoCapture(0)
 
 num_frames = 60
 
