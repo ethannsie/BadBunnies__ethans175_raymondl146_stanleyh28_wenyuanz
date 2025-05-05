@@ -17,7 +17,8 @@ anchor = False
 if (not os.path.isfile("keyboard.db")):
     db.setup()
 
-camera = cv2.VideoCapture(2)  # 0 for default webcam
+camera = cv2.VideoCapture(2)
+camera.set(cv2.CAP_PROP_FPS, 60)
 
 def gen_frames():
     while True:
@@ -32,6 +33,7 @@ def gen_frames():
 
 @app.route("/", methods=['GET', 'POST'])
 def home():
+    print(camera)
     loggedIn = 'username' in session
     if loggedIn:
         return render_template("home.html", logged_in=loggedIn, username=session['username'], stockNames=uniqueStocks)
@@ -137,4 +139,4 @@ def logout():
     return redirect("/")
 
 if __name__ == "__main__":
-    app.run(host='0.0.0.0')
+    app.run(port=3000, host='0.0.0.0')
