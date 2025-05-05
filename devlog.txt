@@ -1,0 +1,4 @@
+ethanS -- 2025-05-05 10:22
+* MASTER UPDATE:
+* demoPivot contains code that allows user to take 60 pictures as fast as the computer is able to given the camera connected to the computer
+* This was combined with OBS Virtual Camera and Droidcam, but is being pivoted toward a dart/flutter dynamic website/app for phone/computer usage
