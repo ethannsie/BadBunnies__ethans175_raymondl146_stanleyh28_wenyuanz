@@ -6,3 +6,6 @@ ethanS -- 2025-05-05 10:22
 ethanS -- 2025-05-06 11:08
 * Pivoting to font/word transcription instead of video
 * Easier to accomplish with an AI model and uploaded images
+
+ethanS -- 2025-05-06 10:36
+* Added Design Doc
