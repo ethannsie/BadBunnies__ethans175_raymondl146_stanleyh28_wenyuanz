@@ -1,4 +1,4 @@
-# Virtual Keyboard by BadBunnies
+# Cipher by BadBunnies
 
 ## Roster:
 - Project Manager | Ethan Sie
