@@ -1,16 +1,22 @@
-blinker==1.8.2
-click==8.1.8
-Flask==3.0.3
-importlib_metadata==8.5.0
-itsdangerous==2.2.0
-Jinja2==3.1.6
-MarkupSafe==2.1.5
-numpy==1.24.4
-opencv-python==4.11.0.86
-pandas==2.0.3
-python-dateutil==2.9.0.post0
-pytz==2025.2
-six==1.17.0
-tzdata==2025.2
-Werkzeug==3.0.6
-zipp==3.20.2
+# Flask + web backend
+flask
+
+# Core ML + model building
+torch
+torchvision
+torchaudio
+
+# Hugging Face models and LoRA
+transformers
+peft
+
+# Data utilities
+scikit-learn
+
+# Image processing
+pillow
+opencv-python
+PyMuPDF
+
+# Optional: Needed by pdf2image on some systems
+# poppler-utils; sys_platform != "win32"
