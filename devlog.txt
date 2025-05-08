@@ -12,3 +12,10 @@ ethanS -- 2025-05-06 10:36
 
 stanleyH -- 2025-05-07 21:01
 * started working on the AI model to detect characters in the image
+
+ethanS -- 2025-05-07 23:49
+* Added Design Doc Changes we discussed in class
+* Added specific analytics
+* Specified amount of data needed by user; system notification
+* Answered question of model storage for LoRA and Torch
+
