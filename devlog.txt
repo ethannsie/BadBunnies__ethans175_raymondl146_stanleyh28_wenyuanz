@@ -22,3 +22,11 @@ DESIGN REVISIONS THUS FAR:
 * Specified amount of data needed by user; system notification
 * Answered question of model storage for LoRA and Torch
 ====================================
+
+ethanS -- 2025-05-08 10:56
+* Added most basic flask routing
+* Added login/logout/register
+* Added flashing
+* Added html pages
+* Added Javascript toggle code
+* Basic backend functionality for serving website is good to go!
