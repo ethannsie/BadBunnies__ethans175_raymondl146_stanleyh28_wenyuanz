@@ -9,3 +9,6 @@ ethanS -- 2025-05-06 11:08
 
 ethanS -- 2025-05-06 10:36
 * Added Design Doc
+
+stanleyH -- 2025-05-07 21:01
+* started working on the AI model to detect characters in the image
