@@ -15,7 +15,10 @@ stanleyH -- 2025-05-07 21:01
 
 ethanS -- 2025-05-07 23:49
 * Added Design Doc Changes we discussed in class
+
+DESIGN REVISIONS THUS FAR:
+------------------------------------
 * Added specific analytics
 * Specified amount of data needed by user; system notification
 * Answered question of model storage for LoRA and Torch
-
+====================================
