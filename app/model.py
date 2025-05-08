@@ -3,7 +3,6 @@ from flask import Flask, render_template, request, redirect, url_for, session, f
 
 # Password hashing
 from werkzeug.security import generate_password_hash, check_password_hash
-# OR: from argon2 import PasswordHasher
 
 # File + time utils
 import os
@@ -36,10 +35,29 @@ def pdf_to_images(pdf_path):
         images.append(img)
     return images
 
-def preprocess_image(pil_img):
-    img = np.array(pil_img.convert("L"))  # Convert to grayscale (0-255)
-    _, thresh = cv2.threshold(img, 0, 255, cv2.THRESH_BINARY_INV + cv2.THRESH_OTSU)
-    return thresh  # binary image: text = white (255), background = black (0)
+def preprocess_image_denoised(pil_img):
+    img = np.array(pil_img.convert("L"))
+    denoised = cv2.fastNlMeansDenoising(img, None, h=30, templateWindowSize=7, searchWindowSize=21)
+    
+    adaptive_thresh = cv2.adaptiveThreshold(
+        denoised, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C,
+        cv2.THRESH_BINARY_INV, 11, 2
+    )
+    return adaptive_thresh
+
+def remove_specks(binary_img):
+    # Median blur smooths isolated specks
+    median = cv2.medianBlur(binary_img, 3)
+    
+    # Remove tiny components
+    num_labels, labels, stats, _ = cv2.connectedComponentsWithStats(median, connectivity=8)
+    result = np.zeros_like(binary_img)
+    
+    for i in range(1, num_labels):  # skip background
+        area = stats[i, cv2.CC_STAT_AREA]
+        if area >= 20:  # keep only real character-sized blobs
+            result[labels == i] = 255
+    return result
 
 def show_image(img, title="Image", cmap="gray"):
     plt.figure(figsize=(8, 10))
@@ -47,25 +65,25 @@ def show_image(img, title="Image", cmap="gray"):
     plt.title(title)
     plt.axis("off")
     plt.show()
-    
+
 def find_characters(img):
     contours, _ = cv2.findContours(img, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
     bounding_boxes = []
 
     for cnt in contours:
         x, y, w, h = cv2.boundingRect(cnt)
-        if h > 1 and w > 1:  # Filter noise
+        area = w * h
+        if 100 < area < 5000 and h > 10 and w > 3:
             bounding_boxes.append((x, y, w, h))
 
-    # Sort: top-to-bottom, then left-to-right
     bounding_boxes.sort(key=lambda box: (box[1] // 50, box[0]))
     return bounding_boxes
 
 def draw_character_boxes(img, boxes, labels=None):
-    img_copy = cv2.cvtColor(img.copy(), cv2.COLOR_GRAY2BGR)  # Convert to color for drawing
+    img_copy = cv2.cvtColor(img.copy(), cv2.COLOR_GRAY2BGR)
 
     for i, (x, y, w, h) in enumerate(boxes):
-        cv2.rectangle(img_copy, (x, y), (x + w, y + h), (0, 255, 0), 1)  # Green box
+        cv2.rectangle(img_copy, (x, y), (x + w, y + h), (0, 255, 0), 1)
         label = str(labels[i]) if labels and i < len(labels) else str(i)
         cv2.putText(img_copy, label, (x, y - 5), cv2.FONT_HERSHEY_SIMPLEX, 0.2, (0, 255, 0), 1)
 
@@ -75,8 +93,13 @@ def draw_character_boxes(img, boxes, labels=None):
     plt.axis("off")
     plt.show()
 
-img_list = pdf_to_images('sample.pdf')
+# === Main Pipeline ===
+img_list = pdf_to_images('text.pdf')
 img = img_list[0]
-new_img = preprocess_image(img)
-char_boxes = find_characters(new_img)
-draw_character_boxes(new_img, char_boxes)
+
+# Preprocessing with denoising and speck removal
+thresh_img = preprocess_image_denoised(img)
+img_cleaned = remove_specks(thresh_img)
+
+char_boxes = find_characters(img_cleaned)
+draw_character_boxes(img_cleaned, char_boxes)
