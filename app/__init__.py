@@ -79,7 +79,6 @@ def login():
         password = request.form['password']
         if db.checkUser(username) >= 0 and db.getTableData("users", "username", username)[2] == password:
             session['username'] = username
-            db.updateLoginTime(session['username'])
             flash("Logged in", 'success')
         else:
             flash("Incorrect username or password.", 'error')
@@ -93,4 +92,4 @@ def logout():
     return redirect("/")
 
 if __name__=="__main__":
-    app.run(port=3000, host='0.0.0.0')
+    app.run(port=3000, host='0.0.0.0', debug=True)

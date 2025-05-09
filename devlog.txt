@@ -30,3 +30,6 @@ ethanS -- 2025-05-08 10:56
 * Added html pages
 * Added Javascript toggle code
 * Basic backend functionality for serving website is good to go!
+
+ethanS -- 2025-05-09 10:38
+* https://huggingface.co/docs/peft/v0.6.0/en/task_guides/image_classification_lora
