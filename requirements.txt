@@ -14,16 +14,6 @@ peft==0.15.2
 scikit-learn==1.6.1
 
 # Image processing
-<<<<<<< HEAD
-pillow
-opencv-python
-PyMuPDF
-
-# Optional: Needed by pdf2image on some systems
-# poppler-utils; sys_platform != "win32"
-ultralytics
-=======
 pillow==11.2.1
 opencv-python==4.11.0.86
 PyMuPDF==1.25.5
->>>>>>> 46d4ce21e1956d5bc6c0246350695c784ff914e2
