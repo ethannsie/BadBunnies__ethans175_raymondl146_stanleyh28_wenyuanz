@@ -91,3 +91,6 @@ def logout():
         flash("Logged out", 'success')
         session.pop('username', None)
     return redirect("/")
+
+if __name__=="__main__":
+    app.run(host='0.0.0.0')
