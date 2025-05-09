@@ -20,3 +20,4 @@ PyMuPDF
 
 # Optional: Needed by pdf2image on some systems
 # poppler-utils; sys_platform != "win32"
+ultralytics
