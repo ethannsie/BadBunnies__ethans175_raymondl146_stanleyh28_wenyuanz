@@ -98,8 +98,12 @@ def map_char(char):
     return char_dict[char]
 
 if __name__ == "__main__":
-    if len(sys.argv) > 1:
-      char = sys.argv[1]
-      print(map_char(char))
+  if len(sys.argv) > 1:
+    word = sys.argv[1]
+    if len(word) > 1:
+      for char in word:
+        print(map_char(char))
     else:
-      print(char_dict)
+      print(map_char(word))
+  else:
+    print(char_dict)
