@@ -1,14 +1,7 @@
-# handwriting.yaml
+import re
+import sys
 
-path: /mnt/c/Users/stanl/Desktop/School Stuff/Softdev/BadBunnies__ethans175_raymondl146_stanleyh28_wenyuanz/app/handwritten-english-characters-and-digits/handwritten-english-characters-and-digits/combined_folder
-train: images/train
-val: images/test             # Path to validation images (relative to 'path')
-# test: test               # (Optional) path to test images
-
-nc: 86                          # Number of classes (0-9, a-z, A-Z, special characters)
-
-names:                          # List of class names by index
-  - "0"
+string = '''  - "0"
   - "1"
   - "2"
   - "3"
@@ -93,4 +86,19 @@ names:                          # List of class names by index
   - "/"
   - "!"
   - "."
-  - ","
+  - ","'''
+  
+s = re.findall("\".\"", string)
+chars = [c[1] for c in s]
+ints = [i for i in range(86)]
+char_dict = {c: i for c, i in zip(chars, ints)}
+      
+def map_char(char):
+    return char_dict[char]
+
+if __name__ == "__main__":
+    if len(sys.argv) > 1:
+      char = sys.argv[1]
+      print(map_char(char))
+    else:
+      print(char_dict)
