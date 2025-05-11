@@ -5,7 +5,7 @@ train: images/train
 val: images/test             # Path to validation images (relative to 'path')
 # test: test               # (Optional) path to test images
 
-nc: 86                          # Number of classes (0-9, a-z, A-Z, special characters)
+nc: 87                          # Number of classes (0-9, a-z, A-Z, special characters)
 
 names:                          # List of class names by index
   - "0"
@@ -94,3 +94,4 @@ names:                          # List of class names by index
   - "!"
   - "."
   - ","
+  - "'"

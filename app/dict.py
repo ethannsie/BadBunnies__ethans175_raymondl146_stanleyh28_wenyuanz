@@ -86,11 +86,12 @@ string = '''  - "0"
   - "/"
   - "!"
   - "."
-  - ","'''
+  - ","
+  - "'"'''
   
 s = re.findall("\".\"", string)
 chars = [c[1] for c in s]
-ints = [i for i in range(86)]
+ints = [i for i in range(87)]
 char_dict = {c: i for c, i in zip(chars, ints)}
       
 def map_char(char):
