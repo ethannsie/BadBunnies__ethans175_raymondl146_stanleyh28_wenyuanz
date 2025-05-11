@@ -102,7 +102,10 @@ if __name__ == "__main__":
     word = sys.argv[1]
     if len(word) > 1:
       for char in word:
-        print(f'{char}: {map_char(char)}')
+        if char == ' ':
+          print()
+        else:
+          print(f'{char}: {map_char(char)}')
     else:
       print(map_char(word))
   else:
