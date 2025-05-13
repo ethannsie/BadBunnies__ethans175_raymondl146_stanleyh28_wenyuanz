@@ -15,7 +15,7 @@ This project is focused on handwriting recognition using machine learning. We ai
 Our project can be installed locally by carrying out the following steps. Users may also skip installation and go straight to the website at the top of our Launch Codes.
 1. Clone and move into this repository
 ```
-$ git clone git@github.com:chloepwong/p04.git
+$ git clone git@github.com:ethannsie/BadBunnies__ethans175_raymondl146_stanleyh28_wenyuanz.git
 ```
 ```
 $ cd p04
