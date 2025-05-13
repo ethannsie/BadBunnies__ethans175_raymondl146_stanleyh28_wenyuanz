@@ -18,7 +18,7 @@ Our project can be installed locally by carrying out the following steps. Users 
 $ git clone git@github.com:ethannsie/BadBunnies__ethans175_raymondl146_stanleyh28_wenyuanz.git
 ```
 ```
-$ cd p04
+$ cd BadBunnies__ethans175_raymondl146_stanleyh28_wenyuanz
 ```
 2. Create a virtual environment
 ```
@@ -40,7 +40,7 @@ $ pip install -r requirements.txt
 Our project can be launched locally by carrying out the following steps. Users may also go straight to http://159.223.128.39/.
 1. Move into this repository
 ```
-$ cd p04
+$ cd BadBunnies__ethans175_raymondl146_stanleyh28_wenyuanz
 ```
 2. Activate the virtual environment: Linux/MacOS
 ```
