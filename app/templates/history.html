@@ -8,98 +8,85 @@
       <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
       <link rel="stylesheet" href="static/css/styles.css">
    </head>
-   <body class="bg-gray-800 text-gray-300 min-h-screen flex flex-col">
-      <!-- Header -->
-      <header class="bg-gray-900 p-6 shadow-md fixed top-0 w-full">
+   <body class="bg-[#7FBFE6] text-gray-100 min-h-screen flex flex-col">
+      <header class="bg-[#8AB7BE] p-6 shadow-md fixed top-0 w-full">
          <div class="container mx-auto flex items-center justify-between">
-            <!-- Left Aligned Logo -->
-            <h1 class="text-3xl text-gray-300 font-bold"><a href="/">Cipher</a></h1>
+            <h1 class="text-3xl text-[#1E1F20] font-bold"><a href="/">Cipher</a></h1>
          </div>
          <nav class="container mx-auto flex items-center justify-between mt-4">
-            <!-- Left Aligned Navigation Links -->
             <div class="flex items-center space-x-5">
-               <a href="/" class="text-lg text-gray-500 hover:text-gray-300">Home</a>
-               <a href="/train" class="text-lg text-gray-500 hover:text-gray-300">Training</a>
-               <a href="/results" class="text-lg text-gray-500 hover:text-gray-300">Results</a>
-               <a href="/history" class="text-lg text-gray-500 hover:text-gray-300"> History</a>
+               <a href="/" class="text-lg text-[#1E1F20] hover:text-[#36393B]">Home</a>
+               <a href="/train" class="text-lg text-[#1E1F20] hover:text-[#36393B]">Training</a>
+               <a href="/results" class="text-lg text-[#1E1F20] hover:text-[#36393B]">Results</a>
+               <a href="/history" class="text-lg text-[#1E1F20] hover:text-[#36393B]">History</a>
             </div>
-            <!-- Right Aligned Login/Register/Logout -->
             <div class="flex items-center ml-auto space-x-5">
                {% if not logged_in %}
-               <button onclick="toggleHidden('register')" class="text-lg text-gray-500 hover:text-gray-300">Register</button>
-               <button onclick="toggleHidden('login')" class="text-lg text-gray-500 hover:text-gray-300">Login</button>
+               <button onclick="toggleHidden('register')" class="text-lg text-[#1E1F20] hover:text-[#36393B]">Register</button>
+               <button onclick="toggleHidden('login')" class="text-lg text-[#1E1F20] hover:text-[#36393B]">Login</button>
                {% else %}
-               <a href="/logout" class="text-lg text-gray-500 hover:text-gray-300">Logout</a>
+               <a href="/logout" class="text-lg text-[#1E1F20] hover:text-[#36393B]">Logout</a>
                {% endif %}
             </div>
          </nav>
       </header>
-      <!-- Main Content -->
-      <main>
-
+      <main class="flex-grow pt-32 px-4">
       </main>
-      <!-- Register  -->
       <div id="register" class="fixed inset-0 bg-black bg-opacity-70 hidden flex items-center justify-center">
-         <div class="bg-gray-700 p-6 rounded shadow-lg w-1/2 h-1/2">
-            <h3 class="text-5xl font-bold mb-4">Register</h3>
+         <div class="bg-[#BFB6BB] text-black p-6 rounded shadow-lg w-1/2 h-1/2">
+            <h3 class="text-5xl font-bold mb-4 text-[#36393B]">Register</h3>
             <form action="/register" method="POST" class="space-y-4">
                <div>
-                  <label for="username" class="block text-sm font-medium text-gray-400">Username</label>
-                  <input type="text" id="username" name="username" class="w-full px-3 py-2 bg-gray-300 text-black rounded" required>
+                  <label for="username" class="block text-sm font-medium text-[#36393B]">Username</label>
+                  <input type="text" id="username" name="username" class="w-full px-3 py-2 bg-gray-200 text-black rounded" required>
                </div>
                <div>
-                  <label for="password" class="block text-sm font-medium text-gray-400">Password</label>
-                  <input type="password" id="password" name="password" class="w-full px-3 py-2 bg-gray-300 text-black rounded" required>
+                  <label for="password" class="block text-sm font-medium text-[#36393B]">Password</label>
+                  <input type="password" id="password" name="password" class="w-full px-3 py-2 bg-gray-200 text-black rounded" required>
                </div>
                <div>
-                  <label for="password2" class="block text-sm font-medium text-gray-400">Confirm Password</label>
-                  <input type="password" id="password2" name="password2" class="w-full px-3 py-2 bg-gray-300 text-black rounded" required>
+                  <label for="password2" class="block text-sm font-medium text-[#36393B]">Confirm Password</label>
+                  <input type="password" id="password2" name="password2" class="w-full px-3 py-2 bg-gray-200 text-black rounded" required>
                </div>
                <div class="flex justify-between items-center">
-                  <button type="submit" class="bg-gray-400 hover:bg-gray-600 text-white py-2 px-4 rounded">Register</button>
-                  <button type="button" onclick="toggleHidden('register')" class="text-gray-300 hover:text-black">Cancel</button>
+                  <button type="submit" class="bg-[#AFD0D6] hover:bg-[#A5D8FF] text-[#36393B] py-2 px-4 rounded">Register</button>
+                  <button type="button" onclick="toggleHidden('register')" class="text-[#36393B] hover:text-[#C49799]">Cancel</button>
                </div>
             </form>
          </div>
       </div>
-      <!-- Log In  -->
       <div id="login" class="fixed inset-0 bg-black bg-opacity-30 hidden flex items-center justify-center">
-         <div class="bg-gray-700 p-6 rounded shadow-lg w-1/2 h-1/2">
-            <h3 class="mt-10 text-5xl font-bold mb-4">Login</h3>
+         <div class="bg-[#BFB6BB] text-black p-6 rounded shadow-lg w-1/2 h-1/2">
+            <h3 class="text-5xl font-bold mb-4 text-[#36393B]">Login</h3>
             <form action="/login" method="POST" class="space-y-4">
                <div>
-                  <label for="username" class="block text-sm font-medium">Username</label>
-                  <input type="text" id="username" name="username" class="w-full px-3 py-2" required>
+                  <label for="username" class="block text-sm font-medium text-[#36393B]">Username</label>
+                  <input type="text" id="username" name="username" class="w-full px-3 py-2 bg-gray-200 text-black rounded" required>
                </div>
                <div>
-                  <label for="password" class="block text-sm font-medium ">Password</label>
-                  <input type="password" id="password" name="password" class="w-full px-3 py-2 " required>
+                  <label for="password" class="block text-sm font-medium text-[#36393B]">Password</label>
+                  <input type="password" id="password" name="password" class="w-full px-3 py-2 bg-gray-200 text-black rounded" required>
                </div>
                <div class="flex justify-between items-center">
-                  <button type="submit" class="">Log In</button>
-                  <button type="button" onclick="toggleHidden('login')" class="">Cancel</button>
+                  <button type="submit" class="bg-[#AFD0D6] hover:bg-[#A5D8FF] text-[#36393B] py-2 px-4 rounded">Log In</button>
+                  <button type="button" onclick="toggleHidden('login')" class="text-[#36393B] hover:text-[#C49799]">Cancel</button>
                </div>
             </form>
          </div>
       </div>
-      <!-- Flash messages -->
       {% with messages = get_flashed_messages(with_categories=true) %}
       {% if messages %}
       <div class="absolute top-4 left-1/2 transform -translate-x-1/2 w-3/4 sm:w-1/2">
          {% for category, message in messages %}
-         <div class="alert {{ category }} mb-4 p-4 rounded-lg shadow-lg opacity-100 transition-opacity duration-1000 animate-fade-out" id="flash-message">
-            <p class="">
-               {{ message }}
-            </p>
+         <div class="alert {{ category }} mb-4 p-4 rounded-lg shadow-lg bg-[#C49799] text-white">
+            <p class="">{{ message }}</p>
          </div>
          {% endfor %}
       </div>
       {% endif %}
       {% endwith %}
-
-      <!-- Footer -->
-      <footer class="fixed bottom-0 w-full r">
-         <p class="">&copy; 2025 CIPHER. All rights reserved.</p>
+      <footer class="fixed bottom-0 w-full bg-[#2c2f31] text-center py-2 text-[#BFB6BB]">
+         <p>&copy; 2025 CIPHER. All rights reserved.</p>
       </footer>
       <script src="static/js/scripts.js"></script>
    </body>
