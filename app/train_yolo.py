@@ -26,13 +26,13 @@ def main(data_yaml: str, epochs: int = 50, img_size: int = 640, batch: int = 16)
         degrees=10,         # Random rotation between -10 to 10 degrees
         perspective=0.001,  # Slight perspective warping (optional)
         project="runs/cipher",
-        name=f"yolov8n-{epochs}ep"
+        name=f"yolov8n-{epochs}ep",
         # resume=True,
-        # device="cpu"
+        device="cpu"
     )
 
     # 3. best weights path
-    best = Path(model.train_args.project) / model.train_args.name / "weights" / "best.pt"
+    best = Path(results.save_dir) / "weights" / "best.pt"
     print(f"\n✅ Training done! Best weights saved to: {best.resolve()}\n")
 
     # 4. (optional) run quick test inference
