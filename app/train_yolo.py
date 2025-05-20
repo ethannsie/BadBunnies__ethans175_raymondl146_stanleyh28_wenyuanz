@@ -17,7 +17,7 @@ def main(data_yaml: str, epochs: int = 50, img_size: int = 640, batch: int = 16)
     # model = YOLO("runs/cipher/yolov8n-80ep16/weights/last.pt")  # resume         
 
     # 2. train
-    model.train(
+    results = model.train(
         data=data_yaml,      # e.g. "handwriting.yaml"
         imgsz=img_size,
         epochs=epochs,

@@ -1,8 +1,8 @@
 # handwriting.yaml
 
-path: /mnt/c/Users/stanl/Desktop/School Stuff/Softdev/BadBunnies__ethans175_raymondl146_stanleyh28_wenyuanz/app/handwriting detection.v2 #handwritten-english-characters-and-digits/handwritten-english-characters-and-digits/combined_folder
+path: /mnt/c/Users/stanl/Desktop/School Stuff/Softdev/BadBunnies__ethans175_raymondl146_stanleyh28_wenyuanz/app/generated #handwritten-english-characters-and-digits/handwritten-english-characters-and-digits/combined_folder
 train: train # images/train
-val: valid # images/test             # Path to validation images (relative to 'path')
+val: val # images/test             # Path to validation images (relative to 'path')
 test: test               # (Optional) path to test images
 
 nc: 91                          # Number of classes (0-9, a-z, A-Z, special characters)
