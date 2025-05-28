@@ -13,7 +13,7 @@ CHAR_CLASSES = list(string.digits + string.ascii_lowercase + string.ascii_upperc
 def main(data_yaml: str, epochs: int = 50, img_size: int = 640, batch: int = 16):
     """Train and export a YOLOv8 model on handwritten characters."""
     # 1. load a small YOLOv8 backbone (n = nano, s = small, m = medium …)
-    model = YOLO("yolov8n.pt") # you can swap for yolov8s.pt for higher accuracy
+    model = YOLO("runs/cipher/yolov8n-80ep19/weights/last.pt") # you can swap for yolov8s.pt for higher accuracy
     # model = YOLO("runs/cipher/yolov8n-80ep16/weights/last.pt")  # resume         
 
     # 2. train
@@ -27,7 +27,7 @@ def main(data_yaml: str, epochs: int = 50, img_size: int = 640, batch: int = 16)
         perspective=0.001,  # Slight perspective warping (optional)
         project="runs/cipher",
         name=f"yolov8n-{epochs}ep",
-        # resume=True,
+        resume=True,
         device="cpu"
     )
 
