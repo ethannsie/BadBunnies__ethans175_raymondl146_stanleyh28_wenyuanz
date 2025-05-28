@@ -2,6 +2,7 @@
 ---
 ## Overview
 Why we care, what this will allow us to do, etc...
+![Pig Or Dog?](pigdog.jpg)
 
 ### Estimated Time Cost: x.x hrs (round to nearest 0.1)
 
