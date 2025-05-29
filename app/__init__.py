@@ -9,7 +9,7 @@ import os
 import sqlite3
 import sys
 from flask import Flask, render_template, request, session, redirect, url_for, flash, jsonify
-import db
+from app import db
 
 DB_FILE = "db.py"
 app = Flask(__name__)
