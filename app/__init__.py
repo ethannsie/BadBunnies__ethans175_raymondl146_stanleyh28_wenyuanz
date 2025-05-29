@@ -9,7 +9,7 @@ import os
 import sqlite3
 import sys
 from flask import Flask, render_template, request, session, redirect, url_for, flash, jsonify
-from app import db
+import db
 
 DB_FILE = "db.py"
 app = Flask(__name__)
@@ -47,6 +47,21 @@ def history():
     loggedIn = 'username' in session
 
     return render_template("history.html", logged_in=loggedIn)
+
+@app.route("/emoji", methods=['GET', 'POST'])
+def emoji():
+    logged_in = 'username' in session
+
+    saved_text = ""
+    processed_text = ""
+
+    if request.method == 'POST':
+        saved_text = request.form.get('user_text', '')
+        processed_text = saved_text.upper()  ## Ethan use this to do whatever you need to do with the text
+
+    return render_template("emoji.html", logged_in=logged_in, saved_text=saved_text, processed_text=processed_text)
+
+
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
@@ -93,4 +108,4 @@ def logout():
     return redirect("/")
 
 if __name__=="__main__":
-    app.run(port=3000, host='0.0.0.0')
+    app.run(port=3000, debug = True, host='0.0.0.0')

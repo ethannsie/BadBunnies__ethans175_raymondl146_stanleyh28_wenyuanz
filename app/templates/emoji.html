@@ -20,7 +20,6 @@
                <a href="/train" class="text-lg text-[#E0E0E0] hover:text-[#B10DC9]">Training</a>
                <a href="/results" class="text-lg text-[#E0E0E0] hover:text-[#B10DC9]">Results</a>
                <a href="/history" class="text-lg text-[#E0E0E0] hover:text-[#B10DC9]">History</a>
-               <a href="/emoji" class="text-lg text-[#E0E0E0] hover:text-[#B10DC9]">Emoji</a>
             </div>
             <div class="flex items-center ml-auto space-x-5">
                {% if not logged_in %}
@@ -35,7 +34,29 @@
    
       <!-- Main Content -->
       <main class="flex-grow pt-32 px-4">
-         <!-- Content goes here -->
+         <div class="max-w-2xl mx-auto mt-10 bg-[#2B2B2B] p-6 rounded-lg shadow-lg">
+            <h2 class="text-2xl font-bold text-[#7FDBFF] mb-4">Enter Text</h2>
+            <form method="POST">
+                <textarea name="user_text" rows="8" class="w-full p-3 rounded bg-[#1A1A1A] text-white resize-none" placeholder="Paste or type your text here..." required>{{ saved_text }}</textarea>
+                <button type="submit" class="mt-4 bg-[#7FDBFF] text-black font-semibold py-2 px-4 rounded hover:bg-[#30CFD0]">
+                    Submit
+                </button>
+            </form>
+
+            {% if saved_text %}
+            <div class="mt-6 p-4 bg-[#121212] rounded text-[#E0E0E0]">
+                <h3 class="text-xl font-semibold mb-2 text-[#B10DC9]">Original Text:</h3>
+                <p>{{ saved_text }}</p>
+            </div>
+            {% endif %}
+
+            {% if processed_text %}
+            <div class="mt-4 p-4 bg-[#1E1E1E] rounded text-[#E0E0E0]">
+                <h3 class="text-xl font-semibold mb-2 text-[#2ECC40]">Processed Output:</h3>
+                <p>{{ processed_text }}</p>
+            </div>
+            {% endif %}
+        </div>
       </main>
    
       <!-- Register Modal -->
