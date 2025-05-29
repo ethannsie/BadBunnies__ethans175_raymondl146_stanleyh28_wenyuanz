@@ -43,3 +43,7 @@ ethanS -- 2025-05-28 22:34
   * SIDE: Using some vectors, tokenization, semantic meanings, we are converting words to emojis!
   * This uses some AI similarity for KNN and transformers for semantic meanings
   * Cool tangential but related transcription tool
+
+ethanS -- 2025-05-28 23:42
+* how-to guides finished
+* website integration of models for alpha release TBD ASAP
