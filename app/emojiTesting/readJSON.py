@@ -1,6 +1,6 @@
 import json
 
-with open('emoji-list.json', 'r', encoding='utf-8') as f:
+with open('emojiTesting/emoji-list.json', 'r', encoding='utf-8') as f:
     emoji_entries = json.load(f)
 
 keyword_to_emoji = {}

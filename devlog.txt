@@ -47,3 +47,7 @@ ethanS -- 2025-05-28 22:34
 ethanS -- 2025-05-28 23:42
 * how-to guides finished
 * website integration of models for alpha release TBD ASAP
+
+ethanS -- 2025-05-29 00:56
+* Base emoji convertor works on website
+

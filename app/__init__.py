@@ -11,6 +11,7 @@ import sys
 from flask import Flask, render_template, request, session, redirect, url_for, flash, jsonify
 import db
 from werkzeug.utils import secure_filename
+from emojiTesting import emojiTranslator
 
 DB_FILE = "db.py"
 app = Flask(__name__)
@@ -75,7 +76,7 @@ def emoji():
 
     if request.method == 'POST':
         saved_text = request.form.get('user_text', '')
-        processed_text = saved_text.upper()  ## Ethan use this to do whatever you need to do with the text
+        processed_text = emojiTranslator.text_to_emoji_faiss(saved_text)  ## Ethan use this to do whatever you need to do with the text
 
     return render_template("emoji.html", logged_in=logged_in, saved_text=saved_text, processed_text=processed_text)
 
