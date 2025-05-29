@@ -5,8 +5,9 @@
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
       <title>Cipher</title>
       <script src="https://cdn.tailwindcss.com"></script>
-      <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
-      <link rel="stylesheet" href="static/css/styles.css">
+      <!-- <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script> -->
+      <link rel="stylesheet" href="static/css/style.css">
+      <script src="static/js/scripts.js"></script>
    </head>
    <body class="bg-[#1A1A1A] text-[#E0E0E0] min-h-screen flex flex-col">
       <!-- Header -->
@@ -18,8 +19,8 @@
             <div class="flex items-center space-x-5">
                <a href="/" class="text-lg text-[#E0E0E0] hover:text-[#B10DC9]">Home</a>
                <a href="/train" class="text-lg text-[#E0E0E0] hover:text-[#B10DC9]">Training</a>
-               <a href="/results" class="text-lg text-[#E0E0E0] hover:text-[#B10DC9]">Results</a>
-               <a href="/history" class="text-lg text-[#E0E0E0] hover:text-[#B10DC9]">History</a>
+               <!-- <a href="/results" class="text-lg text-[#E0E0E0] hover:text-[#B10DC9]">Results</a> -->
+               <!-- <a href="/history" class="text-lg text-[#E0E0E0] hover:text-[#B10DC9]">History</a> -->
                <a href="/emoji" class="text-lg text-[#E0E0E0] hover:text-[#B10DC9]">Emoji</a>
             </div>
             <div class="flex items-center ml-auto space-x-5">
@@ -32,7 +33,7 @@
             </div>
          </nav>
       </header>
-   
+
       <!-- Main Content -->
       <main class="flex-grow pt-32 px-4">
          {% if username %}
@@ -42,15 +43,6 @@
                Welcome back,<br>{{ username }}!
                </h2>
 
-               <a href="{{ url_for('map') }}"
-                  class="inline-block bg-[#7FDBFF] hover:bg-[#30CFD0] text-black font-mono px-4 py-2 rounded-lg transition mx-2">
-               Map
-               </a>
-
-               <a href="{{ url_for('density') }}"
-                  class="inline-block bg-[#B10DC9] hover:bg-[#FF80FF] text-white font-mono px-4 py-2 rounded-lg transition mx-2">
-               D3 Density
-               </a>
             </section>
          </div>
          {% else %}
@@ -60,22 +52,11 @@
                Welcome to<br>Cipher!
                </h2>
 
-               <button onclick="toggleHidden('login')"
-                     class="w-full bg-[#7FDBFF] hover:bg-[#30CFD0] text-black font-mono py-2 rounded-lg transition mb-4">
-               Log In
-               </button>
-
-               <button onclick="toggleHidden('register')"
-                     class="w-full bg-[#e6e0d8] hover:bg-white text-[#333] border-2 border-[#4b4945] font-mono py-2 rounded-lg transition">
-               Sign Up
-               </button>
-            </section>
-         </div>
          {% endif %}
 
        </main>
-       
-   
+
+
       <!-- Register Modal -->
       <div id="register" class="fixed inset-0 bg-black bg-opacity-80 hidden flex items-center justify-center z-20">
          <div class="bg-[#2C2C2C] text-white p-6 rounded shadow-lg w-1/2 h-1/2">
@@ -100,7 +81,7 @@
             </form>
          </div>
       </div>
-   
+
       <!-- Login Modal -->
       <div id="login" class="fixed inset-0 bg-black bg-opacity-80 hidden flex items-center justify-center z-20">
          <div class="bg-[#2C2C2C] text-white p-6 rounded shadow-lg w-1/2 h-1/2">
@@ -121,20 +102,22 @@
             </form>
          </div>
       </div>
-   
+
       <!-- Flash Messages -->
       {% with messages = get_flashed_messages(with_categories=true) %}
       {% if messages %}
-      <div class="absolute top-4 left-1/2 transform -translate-x-1/2 w-3/4 sm:w-1/2 z-30">
+      <div class="fixed top-4 left-1/2 transform -translate-x-1/2 z-50 w-3/4 sm:w-1/2">
          {% for category, message in messages %}
-         <div class="mb-4 p-4 rounded-lg shadow-lg bg-[#B10DC9] text-white">
-            <p>{{ message }}</p>
+         <div class="alert {{ category }} mb-4 p-4 rounded-lg shadow-lg opacity-100 transition-opacity duration-1000 animate-fade-out" id="flash-message">
+            <p class="font-semibold text-lg">
+               {{ message }}
+            </p>
          </div>
          {% endfor %}
       </div>
       {% endif %}
       {% endwith %}
-   
+
       <!-- Footer -->
       <footer class="fixed bottom-0 w-full bg-[#121212] text-center py-2 text-[#7FDBFF]">
          <p>&copy; 2025 CIPHER. All rights reserved.</p>

@@ -9,7 +9,7 @@ import os
 import sqlite3
 import sys
 from flask import Flask, render_template, request, session, redirect, url_for, flash, jsonify
-from app import db
+import db
 from werkzeug.utils import secure_filename
 
 DB_FILE = "db.py"
@@ -112,7 +112,6 @@ def login():
         password = request.form['password']
         if db.checkUser(username) >= 0 and db.getTableData("users", "username", username)[2] == password:
             session['username'] = username
-            db.updateLoginTime(session['username'])
             flash("Logged in", 'success')
         else:
             flash("Incorrect username or password.", 'error')

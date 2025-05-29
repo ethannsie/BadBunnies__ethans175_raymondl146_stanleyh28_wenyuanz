@@ -18,8 +18,8 @@
             <div class="flex items-center space-x-5">
                <a href="/" class="text-lg text-[#E0E0E0] hover:text-[#B10DC9]">Home</a>
                <a href="/train" class="text-lg text-[#E0E0E0] hover:text-[#B10DC9]">Training</a>
-               <a href="/results" class="text-lg text-[#E0E0E0] hover:text-[#B10DC9]">Results</a>
-               <a href="/history" class="text-lg text-[#E0E0E0] hover:text-[#B10DC9]">History</a>
+               <!-- <a href="/results" class="text-lg text-[#E0E0E0] hover:text-[#B10DC9]">Results</a> -->
+               <!-- <a href="/history" class="text-lg text-[#E0E0E0] hover:text-[#B10DC9]">History</a> -->
                <a href="/emoji" class="text-lg text-[#E0E0E0] hover:text-[#B10DC9]">Emoji</a>
             </div>
             <div class="flex items-center ml-auto space-x-5">
@@ -32,7 +32,7 @@
             </div>
          </nav>
       </header>
-   
+
       <!-- Main Content -->
       <main class="flex-grow pt-32 px-4">
          <div class="max-w-2xl mx-auto mt-10 bg-[#2B2B2B] p-6 rounded-lg shadow-lg">
@@ -59,7 +59,7 @@
             {% endif %}
         </div>
       </main>
-   
+
       <!-- Register Modal -->
       <div id="register" class="fixed inset-0 bg-black bg-opacity-80 hidden flex items-center justify-center z-20">
          <div class="bg-[#2C2C2C] text-white p-6 rounded shadow-lg w-1/2 h-1/2">
@@ -84,7 +84,7 @@
             </form>
          </div>
       </div>
-   
+
       <!-- Login Modal -->
       <div id="login" class="fixed inset-0 bg-black bg-opacity-80 hidden flex items-center justify-center z-20">
          <div class="bg-[#2C2C2C] text-white p-6 rounded shadow-lg w-1/2 h-1/2">
@@ -105,7 +105,7 @@
             </form>
          </div>
       </div>
-   
+
       <!-- Flash Messages -->
       {% with messages = get_flashed_messages(with_categories=true) %}
       {% if messages %}
@@ -118,7 +118,7 @@
       </div>
       {% endif %}
       {% endwith %}
-   
+
       <!-- Footer -->
       <footer class="fixed bottom-0 w-full bg-[#121212] text-center py-2 text-[#7FDBFF]">
          <p>&copy; 2025 CIPHER. All rights reserved.</p>
