@@ -12,14 +12,22 @@ from flask import Flask, render_template, request, session, redirect, url_for, f
 import db
 from werkzeug.utils import secure_filename
 from emojiTesting import emojiTranslator
+import subprocess
 
 DB_FILE = "db.py"
 app = Flask(__name__)
 app.secret_key = os.urandom(32)
 anchor = False
+app.config['UPLOAD_FOLDER'] = 'uploads'
 
 if (not os.path.isfile("cipher.db")):
     db.setup()
+
+ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
+
+def allowed_file(filename):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 @app.route("/", methods=['GET', 'POST'])
 def home():
@@ -80,7 +88,45 @@ def emoji():
 
     return render_template("emoji.html", logged_in=logged_in, saved_text=saved_text, processed_text=processed_text)
 
+@app.route("/handwriting", methods=['GET', 'POST'])
+def handwriting():
+    loggedIn = 'username' in session
+    if request.method == 'POST':
+        # file = request.files.get('image')
+        # if not file or file.filename == '' or not allowed_file(file.filename):
+        #     flash('Please upload a valid image.', 'error')
+        #     return redirect(url_for('handwriting'))
 
+        # os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
+        # filename = secure_filename(file.filename)
+        # save_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+        # file.save(save_path)
+
+        # # Call the external script to process the image
+        # result = subprocess.run(['python3', 'inferenceModel.py', save_path], capture_output=True, text=True)
+        # result_text = result.stdout.strip()
+
+        return render_template('handwriting.html', logged_in=loggedIn)
+
+    return render_template('handwriting.html', logged_in=loggedIn)
+
+@app.route("/handwriting-ajax", methods=["POST"])
+def handwriting_ajax():
+    file = request.files.get('image')
+    if not file or file.filename == '' or not allowed_file(file.filename):
+        return jsonify({"error": "Invalid file"}), 400
+
+    os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
+    filename = secure_filename(file.filename)
+    save_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+    file.save(save_path)
+
+    result = subprocess.run(['python3', 'inferenceModel.py', save_path], capture_output=True, text=True)
+    
+    result_text = result.stdout.strip()
+    result_text = ' '.join(result_text.split('\n', 1)[1:])
+
+    return jsonify({"result_text": result_text})
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
