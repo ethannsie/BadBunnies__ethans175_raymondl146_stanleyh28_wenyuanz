@@ -9,6 +9,7 @@ import os
 import sqlite3
 import sys
 from flask import Flask, render_template, request, session, redirect, url_for, flash, jsonify
+from werkzeug.utils import secure_filename
 import db
 
 DB_FILE = "db.py"
@@ -34,8 +35,25 @@ def upload():
 @app.route('/train', methods=['GET', 'POST'])
 def train():
     loggedIn = 'username' in session
+    result_text = None
 
-    return render_template("train.html", logged_in = loggedIn)
+    if request.method == 'POST':
+        file = request.files.get('image')
+        if not file or file.filename == '' or not allowed_file(file.filename):
+            flash('Please upload a valid image.', 'error')
+            return redirect(url_for('train'))
+
+        os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
+        filename = secure_filename(file.filename)
+        save_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+        file.save(save_path)
+
+        result_text = process_image_file(save_path)
+
+    # render whichever template contains your <main> form
+    return render_template('train.html',
+                           logged_in=loggedIn,
+                           result_text=result_text)
 
 @app.route("/results", methods=['GET', 'POST'])
 def results():
