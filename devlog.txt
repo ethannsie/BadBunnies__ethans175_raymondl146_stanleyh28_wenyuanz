@@ -30,3 +30,16 @@ ethanS -- 2025-05-08 10:56
 * Added html pages
 * Added Javascript toggle code
 * Basic backend functionality for serving website is good to go!
+
+ethanS -- 2025-05-28 22:34
+* here's the game plan AFTER MUCH DELIBERATION AND TESTING
+* Handwritten Text to Digital Text will be processed as follows
+  * Train our model based on word identification
+  * This bounds both words and individual letters
+  * Our model can then give a more or less close transcription of an image
+  * THEN, we can send this into an LLM to get a much closer meaning of the initial users writing
+  * DICLAIMER: not 100% accuracy but hopefully 100% will not be gibberish
+* Digital Text to Emojis
+  * SIDE: Using some vectors, tokenization, semantic meanings, we are converting words to emojis!
+  * This uses some AI similarity for KNN and transformers for semantic meanings
+  * Cool tangential but related transcription tool
