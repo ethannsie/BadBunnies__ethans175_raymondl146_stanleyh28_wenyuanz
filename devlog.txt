@@ -44,10 +44,13 @@ ethanS -- 2025-05-28 22:34
   * This uses some AI similarity for KNN and transformers for semantic meanings
   * Cool tangential but related transcription tool
 
+stanleyH -- 2025-05-28 2:50
+* added handwriting model to website
+* created route and html page for converting handwriting > text
+
 ethanS -- 2025-05-28 23:42
 * how-to guides finished
 * website integration of models for alpha release TBD ASAP
 
 ethanS -- 2025-05-29 00:56
 * Base emoji convertor works on website
-
