@@ -92,22 +92,7 @@ def emoji():
 def handwriting():
     loggedIn = 'username' in session
     if request.method == 'POST':
-        # file = request.files.get('image')
-        # if not file or file.filename == '' or not allowed_file(file.filename):
-        #     flash('Please upload a valid image.', 'error')
-        #     return redirect(url_for('handwriting'))
-
-        # os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
-        # filename = secure_filename(file.filename)
-        # save_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
-        # file.save(save_path)
-
-        # # Call the external script to process the image
-        # result = subprocess.run(['python3', 'inferenceModel.py', save_path], capture_output=True, text=True)
-        # result_text = result.stdout.strip()
-
         return render_template('handwriting.html', logged_in=loggedIn)
-
     return render_template('handwriting.html', logged_in=loggedIn)
 
 @app.route("/handwriting-ajax", methods=["POST"])
