@@ -1,19 +1,19 @@
-# Web backend
-flask==3.1.0
-
-# Core ML + model building
+accelerate==1.7.0
+datasets==3.6.0
+faiss-cpu==1.5.3
+fitz==0.0.1.dev2
+Flask==3.1.1
+matplotlib==3.10.3
+mltu==1.2.5
+numpy==2.2.6
+opencv_python==4.11.0.86
+peft==0.15.2
+Pillow==11.2.1
+scikit_learn==1.6.1
+sentence_transformers==4.1.0
 torch==2.7.0
 torchvision==0.22.0
-torchaudio==2.7.0
-
-# Hugging Face + LoRA
+tqdm==4.67.1
 transformers==4.51.3
-peft==0.15.2
-
-# Data utilities
-scikit-learn==1.6.1
-
-# Image processing
-pillow==11.2.1
-opencv-python==4.11.0.86
-PyMuPDF==1.25.5
+ultralytics==8.3.146
+Werkzeug==3.1.3
