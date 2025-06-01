@@ -5,9 +5,12 @@ import glob
 import subprocess
 import os
 import sys
+import shutil
 
 from mltu.inferenceModel import OnnxInferenceModel
 from mltu.utils.text_utils import ctc_decoder, get_cer
+from tqdm import tqdm
+from mltu.configs import BaseModelConfigs
 
 class ImageToWordModel(OnnxInferenceModel):
     def __init__(self, char_list: typing.Union[str, list], *args, **kwargs):
@@ -105,56 +108,26 @@ def segment_and_save_words(image_or_path, output_dir="segmented_words", boxed_ou
 
     # Save the preview image with boxes
     cv2.imwrite(boxed_output_path, image_copy)
-    print(f"Saved {count} word images to '{output_dir}'")
-    # print(f"Boxed preview saved to '{boxed_output_path}'")
 
-if __name__ == "__main__":
-    from tqdm import tqdm
-    from mltu.configs import BaseModelConfigs
-
+def predict_handwriting(image_path):
     configs = BaseModelConfigs.load("models/configs.yaml")
-
     model = ImageToWordModel(model_path=configs.model_path, char_list=configs.vocab)
-    
-    if len(sys.argv) > 1:
-        image_path = sys.argv[1]
-    else:
-        print("Provide an image path as a command line argument.")
-        sys.exit(1)
-        
+
     segment_and_save_words(image_path)
     
-    # 1. Load all your own test images from a folder (adjust path as needed)
-    image_paths = glob.glob("segmented_words/*.jpg")  # or *.jpg, etc.
+    # 1. Load images
+    image_paths = glob.glob("segmented_words/*.jpg") 
     
     image_paths = sorted(image_paths, key=lambda path: int(os.path.splitext(os.path.basename(path))[0]))
 
-    # 2. Optional: if you have ground truth labels, define them here
-    # Example: {"my_images/img1.png": "hello", ...}
-    ground_truth = {}  # Leave empty if you're just testing
-
-    accum_cer = []
+    prediction_str = ""
 
     for image_path in tqdm(image_paths):
         image = cv2.imread(image_path)
         prediction_text = model.predict(image)
 
-        label = ground_truth.get(image_path, "[N/A]")  # fallback if no label
-        cer = get_cer(prediction_text, label) if label != "[N/A]" else None
+        prediction_str += prediction_text + " "
 
-        # print(f"Image: {image_path}, Prediction: {prediction_text}, CER: {cer}")
-        print(prediction_text, end=" ")
+    shutil.rmtree("segmented_words")
 
-        if cer is not None:
-            accum_cer.append(cer)
-
-        # # Optional: show image
-        # image = cv2.resize(image, (image.shape[1] * 4, image.shape[0] * 4))
-        # cv2.imshow("Image", image)
-        # cv2.waitKey(0)
-        # cv2.destroyAllWindows()
-
-    if accum_cer:
-        print(f"Average CER: {np.average(accum_cer)}")
-
-    subprocess.run(["rm", "-r", "segmented_words"])
+    return prediction_str.strip()

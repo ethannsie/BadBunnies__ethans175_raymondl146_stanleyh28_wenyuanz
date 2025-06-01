@@ -14,6 +14,8 @@ from werkzeug.utils import secure_filename
 from emojiTesting import emojiTranslator
 import subprocess
 
+from inferenceModel import predict_handwriting
+
 DB_FILE = "db.py"
 app = Flask(__name__)
 app.secret_key = os.urandom(32)
@@ -106,12 +108,9 @@ def handwriting_ajax():
     save_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
     file.save(save_path)
 
-    result = subprocess.run(['python3', 'inferenceModel.py', save_path], capture_output=True, text=True)
-    
-    result_text = result.stdout.strip()
-    result_text = ' '.join(result_text.split('\n', 1)[1:])
+    result = predict_handwriting(save_path)
 
-    return jsonify({"result_text": result_text})
+    return jsonify({"result_text": result})
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
