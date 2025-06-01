@@ -114,12 +114,15 @@ if __name__ == "__main__":
 
     configs = BaseModelConfigs.load("models/configs.yaml")
 
+    print(configs.model_path)
+    
     model = ImageToWordModel(model_path=configs.model_path, char_list=configs.vocab)
     
     if len(sys.argv) > 1:
         image_path = sys.argv[1]
     else:
-        image_path = '3nkfIT7.jpg'
+        print("Provide an image path as a command line argument.")
+        sys.exit(1)
         
     segment_and_save_words(image_path)
     

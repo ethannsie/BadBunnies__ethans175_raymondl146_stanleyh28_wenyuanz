@@ -106,7 +106,7 @@ def handwriting_ajax():
     save_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
     file.save(save_path)
 
-    result = subprocess.run(['python3', '/home/stanley/cipher/app/inferenceModel.py', save_path], capture_output=True, text=True)
+    result = subprocess.run(['python3', 'inferenceModel.py', save_path], capture_output=True, text=True)
     
     result_text = result.stdout.strip()
     result_text = ' '.join(result_text.split('\n', 1)[1:])
