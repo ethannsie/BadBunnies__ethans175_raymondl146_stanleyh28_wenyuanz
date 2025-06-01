@@ -106,7 +106,7 @@ def handwriting_ajax():
     save_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
     file.save(save_path)
 
-    result = subprocess.run(['python3', 'inferenceModel.py', save_path], capture_output=True, text=True)
+    result = subprocess.run(['python3', '/home/stanley/cipher/app/inferenceModel.py', save_path], capture_output=True, text=True)
     
     result_text = result.stdout.strip()
     result_text = ' '.join(result_text.split('\n', 1)[1:])
@@ -157,4 +157,4 @@ def logout():
     return redirect("/")
 
 if __name__=="__main__":
-    app.run(port=3000, debug = True, host='0.0.0.0')
+    app.run(host='0.0.0.0', debug=False)
