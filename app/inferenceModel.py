@@ -114,8 +114,6 @@ if __name__ == "__main__":
 
     configs = BaseModelConfigs.load("models/configs.yaml")
 
-    print(configs.model_path)
-    
     model = ImageToWordModel(model_path=configs.model_path, char_list=configs.vocab)
     
     if len(sys.argv) > 1:
