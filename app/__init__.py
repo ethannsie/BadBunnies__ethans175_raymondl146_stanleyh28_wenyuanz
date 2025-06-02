@@ -7,12 +7,12 @@
 import random
 import os
 import sqlite3
-import sys
 from flask import Flask, render_template, request, session, redirect, url_for, flash, jsonify
 import db
 from werkzeug.utils import secure_filename
 from emojiTesting import emojiTranslator
-import subprocess
+import uuid
+from pdf2image import convert_from_path
 
 from inferenceModel import predict_handwriting
 
@@ -25,7 +25,7 @@ app.config['UPLOAD_FOLDER'] = 'uploads'
 if (not os.path.isfile("cipher.db")):
     db.setup()
 
-ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
+ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'pdf'}
 
 def allowed_file(filename):
     return '.' in filename and \
@@ -89,6 +89,7 @@ def emoji():
 
     return render_template("emoji.html", logged_in=logged_in, saved_text=saved_text, processed_text=processed_text)
 
+# Handwriting page
 @app.route("/handwriting", methods=['GET', 'POST'])
 def handwriting():
     loggedIn = 'username' in session
@@ -96,20 +97,36 @@ def handwriting():
         return render_template('handwriting.html', logged_in=loggedIn)
     return render_template('handwriting.html', logged_in=loggedIn)
 
+# Gets handwriting predicted result
 @app.route("/handwriting-ajax", methods=["POST"])
 def handwriting_ajax():
     file = request.files.get('image')
     if not file or file.filename == '' or not allowed_file(file.filename):
         return jsonify({"error": "Invalid file"}), 400
 
-    os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
-    filename = secure_filename(file.filename)
-    save_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
-    file.save(save_path)
+    session_id = str(uuid.uuid4())
+    session_dir = os.path.join(app.config['UPLOAD_FOLDER'], session_id)
+    os.makedirs(session_dir, exist_ok=True)
 
-    result = predict_handwriting(save_path)
+    ext = os.path.splitext(file.filename)[1].lower()
+    save_path = os.path.join(session_dir, secure_filename(file.filename))
 
+    # If PDF save each page as image
+    if ext == '.pdf':
+        temp_pdf = os.path.join(session_dir, 'input.pdf')
+        file.save(temp_pdf)
+
+        # Convert each page of the PDF to an image
+        images = convert_from_path(temp_pdf)
+        for i, img in enumerate(images):
+            img_path = os.path.join(session_dir, f'page_{i}.jpg')
+            img.save(img_path, 'JPEG')
+    else:
+        file.save(save_path)
+
+    result = predict_handwriting(session_dir)
     return jsonify({"result_text": result})
+
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():

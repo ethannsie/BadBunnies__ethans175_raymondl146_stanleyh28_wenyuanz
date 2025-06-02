@@ -7,6 +7,7 @@
       <script src="https://cdn.tailwindcss.com"></script>
       <link rel="stylesheet" href="/static/css/style.css">
       <script src="/static/js/scripts.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
    </head>
    <body class="bg-[#1A1A1A] text-[#E0E0E0] min-h-screen flex flex-col">
       <!-- Header -->
@@ -40,7 +41,8 @@
             <section class="max-w-xl w-full bg-[#2C2C2C]/80 border border-white/20 rounded-2xl p-6 shadow-md backdrop-blur-sm">
                <h2 class="text-2xl font-semibold text-center mb-6 text-[#7FDBFF] font-mono">Handwriting Recognition</h2>
                <form id="upload-form" enctype="multipart/form-data" class="space-y-4">
-                  <input type="file" id="image-input" name="image" accept="image/*" required class="w-full bg-[#444] text-white px-4 py-2 rounded">
+                  <input type="file" id="image-input" name="image" accept="image/*,.pdf" required class="w-full bg-[#444] text-white px-4 py-2 rounded">
+                  <canvas id="pdf-preview" class="mt-4 max-h-64 hidden rounded border border-[#444]"></canvas>
                   <img id="preview-image" src="" alt="Image preview" class="mt-4 max-h-64 hidden rounded border border-[#444]" />
                   <button type="submit" class="w-full bg-[#7FDBFF] hover:bg-[#30CFD0] text-black font-semibold py-2 px-4 rounded">
                       Upload & Analyze
@@ -123,17 +125,47 @@
       </footer>
       <script>
         document.getElementById("image-input").addEventListener("change", function () {
-          const file = this.files[0];
-          if (file) {
-              const reader = new FileReader();
-              reader.onload = function (e) {
-                const preview = document.getElementById("preview-image");
-                preview.src = e.target.result;
-                preview.classList.remove("hidden");
-              };
-              reader.readAsDataURL(file);
-          }
-        });
+         const file = this.files[0];
+         const imagePreview = document.getElementById("preview-image");
+         const pdfPreview = document.getElementById("pdf-preview");
+
+         imagePreview.classList.add("hidden");
+         pdfPreview.classList.add("hidden");
+
+         if (!file) return;
+
+         const fileType = file.type;
+
+         if (fileType === "application/pdf") {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+               const typedarray = new Uint8Array(e.target.result);
+
+               pdfjsLib.getDocument(typedarray).promise.then(pdf => {
+               pdf.getPage(1).then(page => {
+                  const canvas = pdfPreview;
+                  const context = canvas.getContext("2d");
+                  const viewport = page.getViewport({ scale: 1.5 });
+
+                  canvas.height = viewport.height;
+                  canvas.width = viewport.width;
+
+                  page.render({ canvasContext: context, viewport: viewport }).promise.then(() => {
+                     canvas.classList.remove("hidden");
+                  });
+               });
+               });
+            };
+            reader.readAsArrayBuffer(file);
+         } else if (fileType.startsWith("image/")) {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+               imagePreview.src = e.target.result;
+               imagePreview.classList.remove("hidden");
+            };
+            reader.readAsDataURL(file);
+         }
+         });
 
         document.getElementById("upload-form").addEventListener("submit", function (e) {
           e.preventDefault();
