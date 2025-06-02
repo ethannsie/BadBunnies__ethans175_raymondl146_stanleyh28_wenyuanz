@@ -13,6 +13,7 @@ from werkzeug.utils import secure_filename
 from emojiTesting import emojiTranslator
 import uuid
 from pdf2image import convert_from_path
+deom PIL import Image
 
 from inferenceModel import predict_handwriting
 
@@ -121,6 +122,10 @@ def handwriting_ajax():
         for i, img in enumerate(images):
             img_path = os.path.join(session_dir, f'page_{i}.jpg')
             img.save(img_path, 'JPEG')
+    if ext != 'jpg':
+        # Creates the png from the image
+        img = Image.open(file)
+        img.save(save_path, format='JPG')
     else:
         file.save(save_path)
 
