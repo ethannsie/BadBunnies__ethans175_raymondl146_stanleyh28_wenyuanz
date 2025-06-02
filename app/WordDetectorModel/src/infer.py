@@ -55,7 +55,7 @@ def sort_aabbs_into_rows(aabbs, row_threshold=0.8):
 
 def main(folder_path):
     parser = argparse.ArgumentParser()
-    parser.add_argument('--device', choices=['cpu', 'cuda'], default='cuda')
+    parser.add_argument('--device', choices=['cpu', 'cuda'], default='cpu')
     args = parser.parse_args()
 
     net = WordDetectorNet()
