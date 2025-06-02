@@ -115,7 +115,9 @@ class DataLoaderImgFile:
     """loader which simply goes through all jpg files of a directory"""
 
     def __init__(self, root_dir, input_size, device, max_side_len=1024):
-        self.fn_imgs = root_dir.files('*.jpg')
+        self.fn_imgs = []
+        for ext in ('*.jpg', '*.jpeg', '*.png', '*.JPG', '*.JPEG', '*.PNG'):
+            self.fn_imgs.extend(root_dir.files(ext))
         self.input_size = input_size
         self.device = device
         self.max_side_len = max_side_len
