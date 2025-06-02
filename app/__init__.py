@@ -122,7 +122,7 @@ def handwriting_ajax():
         for i, img in enumerate(images):
             img_path = os.path.join(session_dir, f'page_{i}.jpg')
             img.save(img_path, 'JPEG')
-    if ext != 'jpg':
+    if ext != '.jpg':
         # Creates the png from the image
         img = Image.open(file)
         img.save(save_path, format='JPG')
