@@ -81,7 +81,7 @@ def emoji():
     if request.method == 'POST':
         saved_text = request.form.get('user_text', '')
         processed_text = emojiTranslator.text_to_emoji_faiss(saved_text)  ## Ethan use this to do whatever you need to do with the text
-        
+
         if logged_in:
             user_id = session['user_id']
             db.insert_emoji(user_id, user_input=saved_text, model_output=processed_text)
@@ -124,7 +124,13 @@ def handwriting_ajax():
     else:
         file.save(save_path)
 
+
     result = predict_handwriting(session_dir)
+
+    if 'username' in session:
+        user_id = session['user_id']
+        db.insert_handwriting(user_id, image_path=save_path, model_output=result)
+
     return jsonify({"result_text": result})
 
 
