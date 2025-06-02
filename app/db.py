@@ -8,14 +8,14 @@ import sqlite3
 import csv
 from datetime import datetime
 
-DB_FILE = "stock.db"
+DB_FILE = "cipher.db"
 
 def setup():
     db = sqlite3.connect(DB_FILE, check_same_thread=False)
     c = db.cursor()
     c.execute("CREATE TABLE IF NOT EXISTS users (user_id INTEGER PRIMARY KEY AUTOINCREMENT, username TEXT NOT NULL UNIQUE, password_hash TEXT NOT NULL);")
-    c.execute("CREATE TABLE IF NOT EXISTS uploads (image_id INTEGER PRIMARY KEY AUTOINCREMENT, user_id INTEGER, training BOOLEAN, image_path TEXT NOT NULL, datetime TEXT NOT NULL);")
-    # c.execute("CREATE TABLE IF NOT EXISTS history (game_ID INTEGER PRIMARY KEY, winner TEXT, loser TEXT);")
+    c.execute("CREATE TABLE IF NOT EXISTS emoji (count INTEGER PRIMARY KEY AUTOINCREMENT, user_id INTEGER, input TEXT, output TEXT);")
+    c.execute("CREATE TABLE IF NOT EXISTS handwriting (count INTEGER PRIMARY KEY AUTOINCREMENT, user_id INTEGER, image_path TEXT NOT NULL, output TEXT);")
 
     db.commit()
     db.close()
@@ -43,6 +43,47 @@ def checkUser(username):
         return result[0]
     else:
         return -1
+
+def insert_emoji(user_id, user_input, model_output):
+    db = sqlite3.connect(DB_FILE, check_same_thread=False)
+    c = db.cursor()
+    c.execute("INSERT INTO emoji (user_id, input, output) VALUES (?, ?, ?)", 
+              (user_id, user_input, model_output))
+    db.commit()
+    db.close()
+
+def insert_handwriting(user_id, image_path, model_output):
+    db = sqlite3.connect(DB_FILE, check_same_thread=False)
+    c = db.cursor()
+    c.execute("INSERT INTO handwriting (user_id, image_path, output) VALUES (?, ?, ?)", 
+              (user_id, image_path, model_output))
+    db.commit()
+    db.close()
+
+def get_emoji_history(user_id):
+    db = sqlite3.connect(DB_FILE, check_same_thread=False)
+    c = db.cursor()
+    c.execute("SELECT * FROM emoji WHERE user_id = ?", (user_id,))
+    results = c.fetchall()
+    db.close()
+    return results
+
+def get_handwriting_history(user_id):
+    db = sqlite3.connect(DB_FILE, check_same_thread=False)
+    c = db.cursor()
+    c.execute("SELECT * FROM handwriting WHERE user_id = ?", (user_id,))
+    results = c.fetchall()
+    db.close()
+    return results
+
+def getUserID(username):
+    db = sqlite3.connect("cipher.db")
+    c = db.cursor()
+    c.execute("SELECT user_id FROM users WHERE username = ?", (username,))
+    result = c.fetchone()
+    db.close()
+    return result[0] if result else None
+
 
 #Updates a value in a table with a new value
 def setTableData(table, updateValueType, newValue, valueType, value):

@@ -7,6 +7,7 @@
       <script src="https://cdn.tailwindcss.com"></script>
       <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
       <link rel="stylesheet" href="static/css/styles.css">
+      <script src="/static/js/scripts.js"></script>
    </head>
    <body class="bg-[#1A1A1A] text-[#E0E0E0] min-h-screen flex flex-col">
       <!-- Header -->
@@ -17,11 +18,11 @@
          <nav class="container mx-auto flex items-center justify-between mt-4">
             <div class="flex items-center space-x-5">
                <a href="/" class="text-lg text-[#E0E0E0] hover:text-[#B10DC9]">Home</a>
-               <!-- <a href="/train" class="text-lg text-[#E0E0E0] hover:text-[#B10DC9]">Training</a> -->
                <a href="/handwriting" class="text-lg text-[#E0E0E0] hover:text-[#B10DC9]">Handwriting</a>
-               <!-- <a href="/results" class="text-lg text-[#E0E0E0] hover:text-[#B10DC9]">Results</a> -->
-               <!-- <a href="/history" class="text-lg text-[#E0E0E0] hover:text-[#B10DC9]">History</a> -->
                <a href="/emoji" class="text-lg text-[#E0E0E0] hover:text-[#B10DC9]">Emoji</a>
+               {%if logged_in %}
+                  <a href="/history" class="text-lg text-[#E0E0E0] hover:text-[#B10DC9]">History</a> 
+               {% endif %}
             </div>
             <div class="flex items-center ml-auto space-x-5">
                {% if not logged_in %}

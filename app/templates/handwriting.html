@@ -17,9 +17,11 @@
          <nav class="container mx-auto flex items-center justify-between mt-4">
             <div class="flex items-center space-x-5">
                <a href="/" class="text-lg text-[#E0E0E0] hover:text-[#B10DC9]">Home</a>
-               <!-- <a href="/train" class="text-lg text-[#E0E0E0] hover:text-[#B10DC9]">Training</a> -->
                <a href="/handwriting" class="text-lg text-[#E0E0E0] hover:text-[#B10DC9]">Handwriting</a>
                <a href="/emoji" class="text-lg text-[#E0E0E0] hover:text-[#B10DC9]">Emoji</a>
+               {%if logged_in %}
+                  <a href="/history" class="text-lg text-[#E0E0E0] hover:text-[#B10DC9]">History</a> 
+               {% endif %}
             </div>
             <div class="flex items-center ml-auto space-x-5">
                {% if not logged_in %}

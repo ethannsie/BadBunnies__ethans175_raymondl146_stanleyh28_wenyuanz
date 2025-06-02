@@ -14,7 +14,7 @@ from werkzeug.utils import secure_filename
 from emojiTesting import emojiTranslator
 import subprocess
 
-DB_FILE = "db.py"
+DB_FILE = "cipher.db"
 app = Flask(__name__)
 app.secret_key = os.urandom(32)
 anchor = False
@@ -41,39 +41,33 @@ def upload():
     loggedIn = 'username' in session
     return redirect("/train", logged_in=loggedIn)
 
-@app.route('/train', methods=['GET', 'POST'])
-def train():
-    loggedIn = 'username' in session
-    result_text = None
-
-    if request.method == 'POST':
-        file = request.files.get('image')
-        if not file or file.filename == '' or not allowed_file(file.filename):
-            flash('Please upload a valid image.', 'error')
-            return redirect(url_for('train'))
-
-        os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
-        filename = secure_filename(file.filename)
-        save_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
-        file.save(save_path)
-
-        result_text = process_image_file(save_path)
-
-    # render whichever template contains your <main> form
-    return render_template('train.html',
-                           logged_in=loggedIn,
-                           result_text=result_text)
-
-@app.route("/results", methods=['GET', 'POST'])
-def results():
-    loggedIn = 'username' in session
-    return render_template("results.html", logged_in=loggedIn)
-
 @app.route("/history", methods=['GET', 'POST'])
 def history():
     loggedIn = 'username' in session
 
-    return render_template("history.html", logged_in=loggedIn)
+    emoji_history = []
+    handwriting_history = []
+
+    if loggedIn:
+        user_id = session.get('user_id')
+        conn = sqlite3.connect(DB_FILE, check_same_thread=False)
+        c = conn.cursor()
+
+        c.execute("SELECT input, output FROM emoji WHERE user_id = ?", (user_id,))
+        emoji_history = c.fetchall()
+
+        c.execute("SELECT image_path, output FROM handwriting WHERE user_id = ?", (user_id,))
+        handwriting_history = c.fetchall()
+
+        conn.close()
+
+    return render_template(
+        "history.html",
+        logged_in=loggedIn,
+        emoji_history=emoji_history,
+        handwriting_history=handwriting_history
+    )
+
 
 @app.route("/emoji", methods=['GET', 'POST'])
 def emoji():
@@ -85,6 +79,11 @@ def emoji():
     if request.method == 'POST':
         saved_text = request.form.get('user_text', '')
         processed_text = emojiTranslator.text_to_emoji_faiss(saved_text)  ## Ethan use this to do whatever you need to do with the text
+        
+        if logged_in:
+            user_id = session['user_id']
+            db.insert_emoji(user_id, user_input=saved_text, model_output=processed_text)
+
 
     return render_template("emoji.html", logged_in=logged_in, saved_text=saved_text, processed_text=processed_text)
 
@@ -111,6 +110,9 @@ def handwriting_ajax():
     result_text = result.stdout.strip()
     result_text = ' '.join(result_text.split('\n', 1)[1:])
 
+    if 'user_id' in session:
+        db.insert_handwriting(session['user_id'], image_path=save_path, model_output=result_text)
+
     return jsonify({"result_text": result_text})
 
 @app.route('/register', methods=['GET', 'POST'])
@@ -132,6 +134,7 @@ def register():
             session['username'] = username
             flash("Registered Successfully!", "success")
             db.addUser(username, password)
+            session['user_id'] = db.getUserID(username)
             return redirect("/")
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -144,6 +147,7 @@ def login():
         password = request.form['password']
         if db.checkUser(username) >= 0 and db.getTableData("users", "username", username)[2] == password:
             session['username'] = username
+            session['user_id'] = db.getUserID(username)
             flash("Logged in", 'success')
         else:
             flash("Incorrect username or password.", 'error')

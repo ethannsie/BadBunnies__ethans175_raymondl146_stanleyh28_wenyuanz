@@ -94,7 +94,7 @@ def draw_character_boxes(img, boxes, labels=None):
     plt.show()
 
 # === Main Pipeline ===
-img_list = pdf_to_images('text.pdf')
+img_list = pdf_to_images('sample.pdf')
 img = img_list[0]
 
 # Preprocessing with denoising and speck removal
