@@ -1,5 +1,5 @@
 #!/bin/sh
-'''exec' "/mnt/c/Users/stanl/Onedrive/Desktop/HS Stuff/Softdev/BadBunnies__ethans175_raymondl146_stanleyh28_wenyuanz/app/SimpleHTR/venv/bin/python3" "$0" "$@"
+'''exec' "/mnt/c/Users/stanl/Desktop/School Stuff/Softdev/BadBunnies__ethans175_raymondl146_stanleyh28_wenyuanz/app/SimpleHTR/venv/bin/python3" "$0" "$@"
 ' '''
 # -*- coding: utf-8 -*-
 import re
