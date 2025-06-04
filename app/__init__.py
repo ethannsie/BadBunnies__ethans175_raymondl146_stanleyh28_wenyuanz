@@ -146,6 +146,7 @@ def transcriptions():
 def admin():
     loggedIn = 'username' in session
     image_paths = db.get_all_images()
+    print(image_paths)
     return render_template(
         'admin.html',
         logged_in=loggedIn,
