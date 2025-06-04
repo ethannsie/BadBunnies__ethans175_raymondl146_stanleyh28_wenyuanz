@@ -20,9 +20,11 @@
                <a href="/" class="text-lg text-[#E0E0E0] hover:text-[#B10DC9]">Home</a>
                <a href="/handwriting" class="text-lg text-[#E0E0E0] hover:text-[#B10DC9]">Handwriting</a>
                <a href="/emoji" class="text-lg text-[#E0E0E0] hover:text-[#B10DC9]">Emoji</a>
+               <a href="/transcriptions" class="text-lg text-[#E0E0E0] hover:text-[#B10DC9]">Transcriptions</a>
                {%if logged_in %}
                   <a href="/history" class="text-lg text-[#E0E0E0] hover:text-[#B10DC9]">History</a> 
                {% endif %}
+               <a href="/admin" class="text-lg text-[#E0E0E0] hover:text-[#B10DC9]">Admin</a> 
             </div>
             <div class="flex items-center ml-auto space-x-5">
                {% if not logged_in %}

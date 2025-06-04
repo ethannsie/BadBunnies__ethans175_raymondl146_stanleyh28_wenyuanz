@@ -39,10 +39,6 @@ def home():
         return render_template("home.html", logged_in=loggedIn, username=session['username'])
     return render_template("home.html", logged_in=loggedIn)
 
-@app.route("/upload", methods=['GET', 'POST'])
-def upload():
-    loggedIn = 'username' in session
-    return redirect("/train", logged_in=loggedIn)
 
 @app.route("/history", methods=['GET', 'POST'])
 def history():
@@ -64,6 +60,8 @@ def history():
 
         conn.close()
 
+
+    print(handwriting_history)
     return render_template(
         "history.html",
         logged_in=loggedIn,
@@ -134,9 +132,25 @@ def handwriting_ajax():
 
     if 'username' in session:
         user_id = session['user_id']
-        db.insert_handwriting(user_id, image_path=save_path, model_output=result)
+        db.insert_handwriting(user_id, image_path=save_path.removeprefix("uploads/"), model_output=result)
 
     return jsonify({"result_text": result})
+
+@app.route("/transcriptions", methods=['GET', 'POST'])
+def transcriptions():
+    loggedIn = 'username' in session
+    approved_rows = db.get_approved_history()
+    return render_template('transcriptions.html', logged_in=loggedIn, transcriptions=approved_rows)
+
+@app.route("/admin", methods=['GET', 'POST'])
+def admin():
+    loggedIn = 'username' in session
+    image_paths = db.get_all_images()
+    return render_template(
+        'admin.html',
+        logged_in=loggedIn,
+        image_paths=image_paths
+    )
 
 
 @app.route('/register', methods=['GET', 'POST'])
@@ -185,4 +199,4 @@ def logout():
     return redirect("/")
 
 if __name__=="__main__":
-    app.run(host='0.0.0.0', debug=False)
+    app.run(host='0.0.0.0', debug=True, port=3000)
