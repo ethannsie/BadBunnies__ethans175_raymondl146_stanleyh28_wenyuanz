@@ -7,7 +7,7 @@
 import random
 import os
 import sqlite3
-from flask import Flask, render_template, request, session, redirect, url_for, flash, jsonify
+from flask import Flask, render_template, request, session, redirect, url_for, flash, jsonify, send_from_directory
 import db
 from werkzeug.utils import secure_filename
 from emojiTesting import emojiTranslator
@@ -197,6 +197,11 @@ def logout():
         flash("Logged out", 'success')
         session.pop('username', None)
     return redirect("/")
+
+@app.route('/uploaded/<path:filename>')
+def get_uploaded(filename):
+    return send_from_directory('uploads', filename)
+
 
 if __name__=="__main__":
     app.run(host='0.0.0.0', debug=True, port=3000)
