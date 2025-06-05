@@ -13,7 +13,7 @@ DB_FILE = "cipher.db"
 def setup():
     db = sqlite3.connect(DB_FILE, check_same_thread=False)
     c = db.cursor()
-    c.execute("CREATE TABLE IF NOT EXISTS users (user_id INTEGER PRIMARY KEY AUTOINCREMENT, username TEXT NOT NULL UNIQUE, password_hash TEXT NOT NULL);")
+    c.execute("CREATE TABLE IF NOT EXISTS users (user_id INTEGER PRIMARY KEY AUTOINCREMENT, username TEXT NOT NULL UNIQUE, password_hash TEXT NOT NULL, is_admin INT DEFAULT 0);")
     c.execute("CREATE TABLE IF NOT EXISTS emoji (count INTEGER PRIMARY KEY AUTOINCREMENT, user_id INTEGER, input TEXT, output TEXT);")
     c.execute("CREATE TABLE IF NOT EXISTS handwriting (count INTEGER PRIMARY KEY AUTOINCREMENT, user_id INTEGER, image_path TEXT NOT NULL, output TEXT, approved INTEGER);")
 
@@ -21,13 +21,16 @@ def setup():
     db.close()
 
 # User Initialization and Manipulation --------------------------------
-def addUser(username, password):
+def addUser(username, password, is_admin=False):
     db = sqlite3.connect(DB_FILE, check_same_thread=False)
     c = db.cursor()
     # datetime formatting for sqlite text
     # created_at = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
     # omits userID as an input as it autoincrements
-    c.execute("INSERT INTO users (username, password_hash) VALUES (?, ?)", (username, password))
+    if is_admin:
+        c.execute("INSERT INTO users (username, password_hash, is_admin) VALUES (?, ?, 1)", (username, password))
+    else:
+        c.execute("INSERT INTO users (username, password_hash) VALUES (?, ?)", (username, password))
     db.commit()
     db.close()
 

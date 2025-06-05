@@ -24,7 +24,9 @@
                {%if logged_in %}
                   <a href="/history" class="text-lg text-[#E0E0E0] hover:text-[#B10DC9]">History</a> 
                {% endif %}
-               <a href="/admin" class="text-lg text-[#E0E0E0] hover:text-[#B10DC9]">Admin</a> 
+               {% if admin %}
+                  <a href="/admin" class="text-lg text-[#E0E0E0] hover:text-[#B10DC9]">Admin</a>
+               {% endif %} 
             </div>
             <div class="flex items-center ml-auto space-x-5">
                {% if not logged_in %}

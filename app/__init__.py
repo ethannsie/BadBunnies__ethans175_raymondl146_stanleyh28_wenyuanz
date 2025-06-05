@@ -54,6 +54,16 @@ def predict_handwriting(folder_path):
 
     return result.strip()
 
+def is_admin():
+    if 'username' in session:
+        username = session['username']
+        conn = sqlite3.connect(DB_FILE, check_same_thread=False)
+        c = conn.cursor()
+        c.execute("SELECT is_admin FROM users WHERE username = ?", (username,))
+        result = c.fetchone()
+        conn.close()
+        return result and result[0] == 1
+
 with open('keys/key_gemini.txt', 'r') as file:
     gemini_key = file.readline().strip()
 
@@ -195,6 +205,19 @@ def register():
             db.addUser(username, password)
             session['user_id'] = db.getUserID(username)
             return redirect("/")
+        
+@app.route('register-admin', methods=['POST'])
+def register_admin():
+    try:
+        username = request.form['username']
+        password = request.form['password']
+        if db.checkUser(username) >= 0:
+            return "Username already exists. Please choose a different username."
+        else:
+            db.addUser(username, password, is_admin=True)
+            return "Admin user registered successfully."
+    except:
+        return "Unable to register admin user. Please try again."
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
