@@ -15,12 +15,14 @@ import uuid
 from pdf2image import convert_from_path
 from PIL import Image
 from google import genai
+import secrets
 
 # from inferenceModel import predict_handwriting
 
 DB_FILE = "cipher.db"
 app = Flask(__name__)
 app.secret_key = os.urandom(32)
+REGISTRATION_KEY = secrets.token_urlsafe(32)
 anchor = False
 app.config['UPLOAD_FOLDER'] = 'uploads'
 
@@ -206,12 +208,15 @@ def register():
             session['user_id'] = db.getUserID(username)
             return redirect("/")
         
-@app.route('register-admin', methods=['POST'])
+@app.route('/register-admin', methods=['POST'])
 def register_admin():
     try:
-        username = request.form['username']
-        password = request.form['password']
-        if db.checkUser(username) >= 0:
+        username = request.form.get('username')
+        password = request.form.get('password')
+        key = request.form.get('key')
+        if key != REGISTRATION_KEY:
+            return 'Invalid admin key — registration denied.'
+        elif db.checkUser(username) >= 0:
             return "Username already exists. Please choose a different username."
         else:
             db.addUser(username, password, is_admin=True)
@@ -248,4 +253,5 @@ def get_uploaded(filename):
 
 
 if __name__=="__main__":
+    print(f"Admin registration key: {REGISTRATION_KEY}")
     app.run(host='0.0.0.0', debug=True, port=3000)
