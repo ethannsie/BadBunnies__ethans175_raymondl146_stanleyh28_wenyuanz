@@ -81,52 +81,6 @@
         {% endif %}
       {% endwith %}
 
-      <!-- Register Modal -->
-      <div id="register" class="fixed inset-0 bg-black bg-opacity-80 hidden flex items-center justify-center z-20">
-         <div class="bg-[#2C2C2C] text-white p-6 rounded shadow-lg w-1/2 h-1/2">
-            <h3 class="text-5xl font-bold mb-4 text-[#7FDBFF]">Register</h3>
-            <form action="/register" method="POST" class="space-y-4">
-               <div>
-                  <label for="username" class="block text-sm font-medium">Username</label>
-                  <input type="text" id="username" name="username" class="w-full px-3 py-2 bg-[#444] text-white rounded" required>
-               </div>
-               <div>
-                  <label for="password" class="block text-sm font-medium">Password</label>
-                  <input type="password" id="password" name="password" class="w-full px-3 py-2 bg-[#444] text-white rounded" required>
-               </div>
-               <div>
-                  <label for="password2" class="block text-sm font-medium">Confirm Password</label>
-                  <input type="password" id="password2" name="password2" class="w-full px-3 py-2 bg-[#444] text-white rounded" required>
-               </div>
-               <div class="flex justify-between items-center">
-                  <button type="submit" class="bg-[#7FDBFF] hover:bg-[#30CFD0] text-black py-2 px-4 rounded">Register</button>
-                  <button type="button" onclick="toggleHidden('register')" class="text-[#B10DC9] hover:text-[#FF80FF]">Cancel</button>
-               </div>
-            </form>
-         </div>
-      </div>
-
-      <!-- Login Modal -->
-      <div id="login" class="fixed inset-0 bg-black bg-opacity-80 hidden flex items-center justify-center z-20">
-         <div class="bg-[#2C2C2C] text-white p-6 rounded shadow-lg w-1/2 h-1/2">
-            <h3 class="text-5xl font-bold mb-4 text-[#7FDBFF]">Login</h3>
-            <form action="/login" method="POST" class="space-y-4">
-               <div>
-                  <label for="username" class="block text-sm font-medium">Username</label>
-                  <input type="text" id="username" name="username" class="w-full px-3 py-2 bg-[#444] text-white rounded" required>
-               </div>
-               <div>
-                  <label for="password" class="block text-sm font-medium">Password</label>
-                  <input type="password" id="password" name="password" class="w-full px-3 py-2 bg-[#444] text-white rounded" required>
-               </div>
-               <div class="flex justify-between items-center">
-                  <button type="submit" class="bg-[#7FDBFF] hover:bg-[#30CFD0] text-black py-2 px-4 rounded">Log In</button>
-                  <button type="button" onclick="toggleHidden('login')" class="text-[#B10DC9] hover:text-[#FF80FF]">Cancel</button>
-               </div>
-            </form>
-         </div>
-      </div>
-
       <!-- Footer -->
       <footer class="fixed bottom-0 w-full bg-[#121212] text-center py-2 text-[#7FDBFF]">
          <p>&copy; 2025 CIPHER. All rights reserved.</p>

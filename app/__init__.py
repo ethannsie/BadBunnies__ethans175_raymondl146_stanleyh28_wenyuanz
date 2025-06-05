@@ -10,6 +10,7 @@ import sqlite3
 from flask import Flask, render_template, request, session, redirect, url_for, flash, jsonify, send_from_directory
 import db
 from werkzeug.utils import secure_filename
+from werkzeug.exceptions import RequestEntityTooLarge
 from emojiTesting import emojiTranslator
 import uuid
 from pdf2image import convert_from_path
@@ -25,6 +26,8 @@ app.secret_key = os.urandom(32)
 REGISTRATION_KEY = secrets.token_urlsafe(32)
 anchor = False
 app.config['UPLOAD_FOLDER'] = 'uploads'
+app.config['MAX_CONTENT_LENGTH'] = 500 * 1024 * 1024  # 500 MB
+
 
 if (not os.path.isfile("cipher.db")):
     db.setup()
@@ -262,6 +265,11 @@ def logout():
 @app.route('/uploaded/<path:filename>')
 def get_uploaded(filename):
     return send_from_directory('uploads', filename)
+
+
+@app.errorhandler(RequestEntityTooLarge)
+def handle_large_file(e):
+    return jsonify({"error": "File too large. Max 500MB allowed."}), 413
 
 
 if __name__=="__main__":
