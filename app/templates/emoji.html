@@ -30,10 +30,13 @@
             </div>
             <div class="flex items-center ml-auto space-x-5">
                {% if not logged_in %}
-               <button onclick="toggleHidden('register')" class="text-lg text-[#E0E0E0] hover:text-[#7FDBFF]">Register</button>
-               <button onclick="toggleHidden('login')" class="text-lg text-[#E0E0E0] hover:text-[#7FDBFF]">Login</button>
+                  <button onclick="toggleHidden('register')" class="text-lg text-[#E0E0E0] hover:text-[#7FDBFF]">Register</button>
+                  <button onclick="toggleHidden('login')" class="text-lg text-[#E0E0E0] hover:text-[#7FDBFF]">Login</button>
                {% else %}
-               <a href="/logout" class="text-lg text-[#E0E0E0] hover:text-[#7FDBFF]">Logout</a>
+                  <div class="text-xl font-semibold uppercase tracking-wide text-[#7FDBFF] font-mono">
+                     Hi, {{ session['username'] }}!
+                  </div>
+                  <a href="/logout" class="text-lg text-[#E0E0E0] hover:text-[#7FDBFF]">Logout</a>
                {% endif %}
             </div>
          </nav>
@@ -129,5 +132,14 @@
       <footer class="fixed bottom-0 w-full bg-[#121212] text-center py-2 text-[#7FDBFF]">
          <p>&copy; 2025 CIPHER. All rights reserved.</p>
       </footer>
+      <script>
+         document.querySelector("form").addEventListener("submit", () => {
+            document.getElementById("loading-spinner").classList.remove("hidden");
+         });
+      </script>
+      <!-- Loading Spinner -->
+      <div id="loading-spinner" class="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50 hidden">
+         <div class="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-[#7FDBFF]"></div>
+      </div>
    </body>
 </html>

@@ -27,10 +27,13 @@
             </div>
             <div class="flex items-center ml-auto space-x-5">
                {% if not logged_in %}
-               <button onclick="toggleHidden('register')" class="text-lg text-[#E0E0E0] hover:text-[#7FDBFF]">Register</button>
-               <button onclick="toggleHidden('login')" class="text-lg text-[#E0E0E0] hover:text-[#7FDBFF]">Login</button>
+                  <button onclick="toggleHidden('register')" class="text-lg text-[#E0E0E0] hover:text-[#7FDBFF]">Register</button>
+                  <button onclick="toggleHidden('login')" class="text-lg text-[#E0E0E0] hover:text-[#7FDBFF]">Login</button>
                {% else %}
-               <a href="/logout" class="text-lg text-[#E0E0E0] hover:text-[#7FDBFF]">Logout</a>
+                  <div class="text-xl font-semibold uppercase tracking-wide text-[#7FDBFF] font-mono">
+                     Hi, {{ session['username'] }}!
+                  </div>
+                  <a href="/logout" class="text-lg text-[#E0E0E0] hover:text-[#7FDBFF]">Logout</a>
                {% endif %}
             </div>
          </nav>

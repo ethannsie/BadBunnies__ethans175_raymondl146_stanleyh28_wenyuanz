@@ -33,7 +33,9 @@
                   <button onclick="toggleHidden('register')" class="text-lg text-[#E0E0E0] hover:text-[#7FDBFF]">Register</button>
                   <button onclick="toggleHidden('login')" class="text-lg text-[#E0E0E0] hover:text-[#7FDBFF]">Login</button>
                {% else %}
-                  <span class="text-[#7FDBFF] font-semibold text-lg">Welcome {{ session['username'] }}</span>
+                  <div class="text-xl font-semibold uppercase tracking-wide text-[#7FDBFF] font-mono">
+                     Hi, {{ session['username'] }}!
+                  </div>
                   <a href="/logout" class="text-lg text-[#E0E0E0] hover:text-[#7FDBFF]">Logout</a>
                {% endif %}
             </div>

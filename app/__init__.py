@@ -65,6 +65,7 @@ def is_admin():
         result = c.fetchone()
         conn.close()
         return result and result[0] == 1
+    return 0
 
 with open('keys/key_gemini.txt', 'r') as file:
     gemini_key = file.readline().strip()
@@ -73,6 +74,8 @@ with open('keys/key_gemini.txt', 'r') as file:
 def home():
     loggedIn = 'username' in session
     if loggedIn:
+        if is_admin():
+            return render_template("home.html", logged_in=loggedIn, username=session['username'], admin=True)
         return render_template("home.html", logged_in=loggedIn, username=session['username'])
     return render_template("home.html", logged_in=loggedIn)
 
@@ -130,6 +133,8 @@ def emoji():
 def handwriting():
     loggedIn = 'username' in session
     if request.method == 'POST':
+        if is_admin():
+            return render_template('handwriting.html', logged_in=loggedIn, admin=True)
         return render_template('handwriting.html', logged_in=loggedIn)
     return render_template('handwriting.html', logged_in=loggedIn)
 
@@ -172,18 +177,25 @@ def handwriting_ajax():
 def transcriptions():
     loggedIn = 'username' in session
     approved_rows = db.get_approved_history()
+    if is_admin():
+        return render_template('transcriptions.html', logged_in=loggedIn, transcriptions=approved_rows, admin=True)
     return render_template('transcriptions.html', logged_in=loggedIn, transcriptions=approved_rows)
 
 @app.route("/admin", methods=['GET', 'POST'])
 def admin():
-    loggedIn = 'username' in session
-    image_paths = db.get_all_images()
-    print(image_paths)
-    return render_template(
-        'admin.html',
-        logged_in=loggedIn,
-        image_paths=image_paths
-    )
+    if is_admin():
+        loggedIn = 'username' in session
+        image_paths = db.get_all_images()
+        print(image_paths)
+        return render_template(
+            'admin.html',
+            logged_in=loggedIn,
+            image_paths=image_paths,
+            admin=True
+        )
+    else:
+        flash("You must be an admin to access this page", 'error')
+        return redirect("/")
 
 
 @app.route('/register', methods=['GET', 'POST'])
