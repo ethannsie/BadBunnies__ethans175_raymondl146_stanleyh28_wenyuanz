@@ -14,8 +14,9 @@ from emojiTesting import emojiTranslator
 import uuid
 from pdf2image import convert_from_path
 from PIL import Image
+from google import genai
 
-from inferenceModel import predict_handwriting
+# from inferenceModel import predict_handwriting
 
 DB_FILE = "cipher.db"
 app = Flask(__name__)
@@ -31,6 +32,30 @@ ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'pdf'}
 def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+def predict_handwriting(folder_path):
+    client = genai.Client(api_key=gemini_key)
+
+    result = ""
+
+    _, _, files = next(os.walk(folder_path))
+    file_count = len(files)
+    for i in range(file_count):
+        img_file = os.path.join(folder_path, files[i])
+
+        my_file = client.files.upload(file=img_file)
+
+        response = client.models.generate_content(
+            model="gemini-2.5-flash-preview-05-20",
+            contents=[my_file, "Extract text from this image, return just the text extracted."],
+        )
+
+        result += response.text
+
+    return result.strip()
+
+with open('keys/key_gemini.txt', 'r') as file:
+    gemini_key = file.readline().strip()
 
 @app.route("/", methods=['GET', 'POST'])
 def home():
@@ -120,13 +145,8 @@ def handwriting_ajax():
         for i, img in enumerate(images):
             img_path = os.path.join(session_dir, f'page_{i}.jpg')
             img.save(img_path, 'JPEG')
-    # elif ext != '.jpg' or ext != '.jpeg':
-    #     # Creates the png from the image
-    #     img = Image.open(file)
-    #     img.save(save_path, format='JPEG')
     else:
         file.save(save_path)
-
 
     result = predict_handwriting(session_dir)
 
