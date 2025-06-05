@@ -19,7 +19,9 @@
                <a href="/" class="text-lg text-[#E0E0E0] hover:text-[#B10DC9]">Home</a>
                <a href="/handwriting" class="text-lg text-[#E0E0E0] hover:text-[#B10DC9]">Handwriting</a>
                <a href="/emoji" class="text-lg text-[#E0E0E0] hover:text-[#B10DC9]">Emoji</a>
+               <a href="/transcriptions" class="text-lg text-[#E0E0E0] hover:text-[#B10DC9]">Transcriptions</a>
                <a href="/history" class="text-lg text-[#E0E0E0] hover:text-[#B10DC9]">History</a> 
+               <a href="/admin" class="text-lg text-[#E0E0E0] hover:text-[#B10DC9]">Admin</a> 
             </div>
             <div class="flex items-center ml-auto space-x-5">
                {% if not logged_in %}
@@ -59,7 +61,7 @@
             <ul class="space-y-4">
                {% for image_path, output in handwriting_history %}
                <li class="bg-[#2B2B2B] p-4 rounded shadow">
-                  <img src="{{ url_for('static', filename=image_path.split('static/')[-1]) }}" alt="Uploaded Image" class="mt-3 w-40 border">
+                  <img src="{{ url_for('get_uploaded', filename = image_path) }}" alt="Uploaded Image" class="mt-3 w-auto h-auto max-w-[1000px] max-h-[400px] border">
                   <div><strong>Output:</strong> {{ output }}</div>
                </li>
                {% else %}

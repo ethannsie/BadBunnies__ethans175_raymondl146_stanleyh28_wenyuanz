@@ -15,7 +15,7 @@ def setup():
     c = db.cursor()
     c.execute("CREATE TABLE IF NOT EXISTS users (user_id INTEGER PRIMARY KEY AUTOINCREMENT, username TEXT NOT NULL UNIQUE, password_hash TEXT NOT NULL);")
     c.execute("CREATE TABLE IF NOT EXISTS emoji (count INTEGER PRIMARY KEY AUTOINCREMENT, user_id INTEGER, input TEXT, output TEXT);")
-    c.execute("CREATE TABLE IF NOT EXISTS handwriting (count INTEGER PRIMARY KEY AUTOINCREMENT, user_id INTEGER, image_path TEXT NOT NULL, output TEXT);")
+    c.execute("CREATE TABLE IF NOT EXISTS handwriting (count INTEGER PRIMARY KEY AUTOINCREMENT, user_id INTEGER, image_path TEXT NOT NULL, output TEXT, approved INTEGER);")
 
     db.commit()
     db.close()
@@ -55,10 +55,29 @@ def insert_emoji(user_id, user_input, model_output):
 def insert_handwriting(user_id, image_path, model_output):
     db = sqlite3.connect(DB_FILE, check_same_thread=False)
     c = db.cursor()
-    c.execute("INSERT INTO handwriting (user_id, image_path, output) VALUES (?, ?, ?)", 
-              (user_id, image_path, model_output))
+    c.execute("INSERT INTO handwriting (user_id, image_path, output, approved) VALUES (?, ?, ?, ?)", 
+              (user_id, image_path, model_output, 0))
     db.commit()
     db.close()
+
+def update_approved(handwriting_id, approved=True):
+    db = sqlite3.connect(DB_FILE, check_same_thread=False)
+    c = db.cursor()
+    c.execute(
+        "UPDATE handwriting SET approved = ? WHERE count = ?",
+        (1 if approved else 0, handwriting_id)
+    )
+    db.commit()
+    db.close()
+
+
+def get_all_images():
+    conn = sqlite3.connect(DB_FILE)
+    c = conn.cursor()
+    c.execute("SELECT image_path FROM handwriting ORDER BY count DESC")
+    rows = c.fetchall()
+    conn.close()
+    return [row[0] for row in rows]
 
 def get_emoji_history(user_id):
     db = sqlite3.connect(DB_FILE, check_same_thread=False)
@@ -83,6 +102,15 @@ def getUserID(username):
     result = c.fetchone()
     db.close()
     return result[0] if result else None
+
+def get_approved_history():
+    conn = sqlite3.connect(DB_FILE)
+    conn.row_factory = sqlite3.Row
+    c = conn.cursor()
+    c.execute("SELECT * FROM handwriting WHERE approved = 1 ORDER BY count DESC")
+    rows = c.fetchall()
+    conn.close()
+    return rows
 
 
 #Updates a value in a table with a new value
