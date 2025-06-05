@@ -34,3 +34,7 @@
     border-color: #ffeeba;
     color: #856404;
 }
+
+#loading-spinner {
+  transition: opacity 0.3s ease;
+}

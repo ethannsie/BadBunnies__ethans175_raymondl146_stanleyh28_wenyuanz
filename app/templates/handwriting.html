@@ -174,25 +174,34 @@
          });
 
         document.getElementById("upload-form").addEventListener("submit", function (e) {
-          e.preventDefault();
+         e.preventDefault();
 
-          const formData = new FormData(this);
+         const formData = new FormData(this);
+         const spinner = document.getElementById("loading-spinner");
+         spinner.classList.remove("hidden");
 
-          fetch("/handwriting-ajax", {
-              method: "POST",
-              body: formData
-          })
-          .then(response => response.json())
-          .then(data => {
-              document.getElementById("result-text").textContent = data.result_text;
-              document.getElementById("result-output").classList.remove("hidden");
-          })
-          .catch(err => {
-              alert("Something went wrong!");
-              console.error(err);
-          });
-        });
+         fetch("/handwriting-ajax", {
+            method: "POST",
+            body: formData
+         })
+         .then(response => response.json())
+         .then(data => {
+            document.getElementById("result-text").textContent = data.result_text;
+            document.getElementById("result-output").classList.remove("hidden");
+         })
+         .catch(err => {
+            alert("Something went wrong!");
+            console.error(err);
+         })
+         .finally(() => {
+            spinner.classList.add("hidden");
+         });
+      });
         </script>
 
+      <!-- Loading Spinner -->
+      <div id="loading-spinner" class="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50 hidden">
+         <div class="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-[#7FDBFF]"></div>
+      </div>
    </body>
 </html>
