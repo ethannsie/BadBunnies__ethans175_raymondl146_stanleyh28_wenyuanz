@@ -28,17 +28,18 @@
             </div>
             <div class="flex items-center ml-auto space-x-5">
                {% if not logged_in %}
-               <button onclick="toggleHidden('register')" class="text-lg text-[#E0E0E0] hover:text-[#7FDBFF]">Register</button>
-               <button onclick="toggleHidden('login')" class="text-lg text-[#E0E0E0] hover:text-[#7FDBFF]">Login</button>
+                  <button onclick="toggleHidden('register')" class="text-lg text-[#E0E0E0] hover:text-[#7FDBFF]">Register</button>
+                  <button onclick="toggleHidden('login')" class="text-lg text-[#E0E0E0] hover:text-[#7FDBFF]">Login</button>
                {% else %}
-               <a href="/logout" class="text-lg text-[#E0E0E0] hover:text-[#7FDBFF]">Logout</a>
+                  <span class="text-[#7FDBFF] font-semibold text-lg">Welcome {{ session['username'] }}</span>
+                  <a href="/logout" class="text-lg text-[#E0E0E0] hover:text-[#7FDBFF]">Logout</a>
                {% endif %}
             </div>
          </nav>
       </header>
 
       <!-- Main Content -->
-      <main class="flex-grow pt-32 px-4">
+      <main class="flex-grow pt-32 px-4 pb-32">
          <div class="flex justify-center mt-10">
             <section class="max-w-xl w-full bg-[#2C2C2C]/80 border border-white/20 rounded-2xl p-6 shadow-md backdrop-blur-sm">
                <h2 class="text-2xl font-semibold text-center mb-6 text-[#7FDBFF] font-mono">Handwriting Recognition</h2>
@@ -120,6 +121,9 @@
             </form>
          </div>
       </div>
+      <br>
+      <br>
+      <br>
 
       <!-- Footer -->
       <footer class="fixed bottom-0 w-full bg-[#121212] text-center py-2 text-[#7FDBFF]">
