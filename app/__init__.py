@@ -105,6 +105,14 @@ def history():
 
 
     print(handwriting_history)
+    if is_admin():
+        return render_template(
+            "history.html",
+            logged_in=loggedIn,
+            emoji_history=emoji_history,
+            handwriting_history=handwriting_history,
+            admin=True
+        )
     return render_template(
         "history.html",
         logged_in=loggedIn,
@@ -128,17 +136,16 @@ def emoji():
             user_id = session['user_id']
             db.insert_emoji(user_id, user_input=saved_text, model_output=processed_text)
 
-
+    if is_admin():
+        return render_template("emoji.html", logged_in=logged_in, saved_text=saved_text, processed_text=processed_text, admin=True)
     return render_template("emoji.html", logged_in=logged_in, saved_text=saved_text, processed_text=processed_text)
 
 # Handwriting page
 @app.route("/handwriting", methods=['GET', 'POST'])
 def handwriting():
     loggedIn = 'username' in session
-    if request.method == 'POST':
-        if is_admin():
-            return render_template('handwriting.html', logged_in=loggedIn, admin=True)
-        return render_template('handwriting.html', logged_in=loggedIn)
+    if is_admin():
+        return render_template('handwriting.html', logged_in=loggedIn, admin=True)
     return render_template('handwriting.html', logged_in=loggedIn)
 
 # Gets handwriting predicted result
