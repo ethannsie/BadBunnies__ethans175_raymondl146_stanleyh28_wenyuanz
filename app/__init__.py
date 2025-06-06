@@ -162,18 +162,18 @@ def handwriting_ajax():
     ext = os.path.splitext(file.filename)[1].lower()
     save_path = os.path.join(session_dir, secure_filename(file.filename))
 
-    # If PDF save each page as image
-    if ext == '.pdf':
-        temp_pdf = os.path.join(session_dir, 'input.pdf')
-        file.save(temp_pdf)
+    # # If PDF save each page as image
+    # if ext == '.pdf':
+    #     temp_pdf = os.path.join(session_dir, 'input.pdf')
+    #     file.save(temp_pdf)
 
-        # Convert each page of the PDF to an image
-        images = convert_from_path(temp_pdf)
-        for i, img in enumerate(images):
-            img_path = os.path.join(session_dir, f'page_{i}.jpg')
-            img.save(img_path, 'JPEG')
-    else:
-        file.save(save_path)
+    #     # Convert each page of the PDF to an image
+    #     images = convert_from_path(temp_pdf)
+    #     for i, img in enumerate(images):
+    #         img_path = os.path.join(session_dir, f'page_{i}.jpg')
+    #         img.save(img_path, 'JPEG')
+    # else:
+    file.save(save_path)
 
     result = predict_handwriting(session_dir)
 
