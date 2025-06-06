@@ -74,6 +74,19 @@ def update_approved(handwriting_id, approved=True):
     db.close()
 
 
+def get_unapproved_images():
+    conn = sqlite3.connect(DB_FILE)
+    c = conn.cursor()
+    c.execute("""
+        SELECT count, image_path, approved
+        FROM handwriting
+        WHERE approved = 0
+        ORDER BY count DESC
+    """)
+    rows = c.fetchall()
+    conn.close()
+    return rows
+
 def get_all_images():
     conn = sqlite3.connect(DB_FILE)
     c = conn.cursor()

@@ -179,26 +179,79 @@ def handwriting_ajax():
 @app.route("/transcriptions", methods=['GET', 'POST'])
 def transcriptions():
     loggedIn = 'username' in session
-    approved_rows = db.get_approved_history()
-    if is_admin():
-        return render_template('transcriptions.html', logged_in=loggedIn, transcriptions=approved_rows, admin=True)
-    return render_template('transcriptions.html', logged_in=loggedIn, transcriptions=approved_rows)
 
+    # 1. Fetch all approved handwriting rows (each row is an sqlite3.Row)
+    approved_rows = db.get_approved_history()
+
+    # 2. For each Row, look up the corresponding username
+    enriched = []
+    conn = sqlite3.connect(db.DB_FILE)
+    conn.row_factory = sqlite3.Row
+    c = conn.cursor()
+
+    for row in approved_rows:
+        user_id = row['user_id']
+
+        # Query the users table to get username for this user_id
+        c.execute("SELECT username FROM users WHERE user_id = ?", (user_id,))
+        user_row = c.fetchone()
+        username = user_row['username'] if user_row else "Unknown"
+
+        enriched.append({
+            "username": username,
+            "image_path": row['image_path'],
+            "output": row['output']
+        })
+
+    conn.close()
+
+    # 3. Pass this new list of dicts into the template
+    if is_admin():
+        return render_template(
+            'transcriptions.html',
+            logged_in=loggedIn,
+            transcriptions=enriched,
+            admin=True
+        )
+    else:
+        return render_template(
+            'transcriptions.html',
+            logged_in=loggedIn,
+            transcriptions=enriched
+        )
 @app.route("/admin", methods=['GET', 'POST'])
 def admin():
     if is_admin():
         loggedIn = 'username' in session
-        image_paths = db.get_all_images()
-        print(image_paths)
+        images= db.get_unapproved_images()
         return render_template(
             'admin.html',
             logged_in=loggedIn,
-            image_paths=image_paths,
+            images=images,
             admin=True
         )
     else:
         flash("You must be an admin to access this page", 'error')
         return redirect("/")
+
+@app.route("/admin/approve/<int:image_id>", methods=["POST"])
+def approve_image(image_id):
+    if not is_admin():
+        flash("Unauthorized", "error")
+        return redirect("/")
+
+    conn = sqlite3.connect(db.DB_FILE)
+    c = conn.cursor()
+    # Flip approved from 0 → 1
+    c.execute(
+        "UPDATE handwriting SET approved = 1 WHERE count = ?",
+        (image_id,)
+    )
+    conn.commit()
+    conn.close()
+
+    flash(f"Image #{image_id} approved.", "success")
+    return redirect("/admin")
 
 
 @app.route('/register', methods=['GET', 'POST'])
